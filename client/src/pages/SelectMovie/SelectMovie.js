@@ -65,74 +65,136 @@ const SelectMovie = () => {
 
       localStorage.setItem('movieInfo', JSON.stringify(movieData.title));
 
+
+
+      const optionsParams = {
+        method: 'GET',
+        url: 'https://mdblist.p.rapidapi.com/',
+        params: [],
+        headers: {
+          'X-RapidAPI-Host': 'mdblist.p.rapidapi.com',
+          'X-RapidAPI-Key': '384177d302msh9d8e58d9f31ffccp1bfa57jsnf3cea9fef042',
+        },
+      };
+      axios
+        .request({
+            ...optionsParams,
+            params: { s: `${movieData.title}` }
+          })
+        .then(function (response) {
+          console.log(response.data);
+          const traktid = response.data.search[0].traktid;
+          const traktidOptions = {
+              ...optionsParams,
+              params: { t: `${traktid}` }
+          };
+          axios.request(traktidOptions).then(function (response) {
+  
+            // if (!response.ok) {
+            //   return false;
+            // }
+  
+            const streamingServices = response.data.streams;
+            setStreamingState(streamingServices);
+            //console.log(streamingState);
+            console.log(response.data.streams)
+  
+            let temporaryArray = [];
+  
+            for (let i = 0; i < response.data.streams.length; i++){
+  
+              temporaryArray.push(response.data.streams[i].name)
+  
+            //  const streamingEl = document.getElementById('streaming');
+            //  const streamingElInput = document.createElement("p");
+            //  streamingElInput.innerHTML(response.data.streams[i].name); 
+            //  console.log(response.data.streams[i].name)
+            //  streamingEl.append(streamingElInput);
+           }
+           setStreamingState({
+             other: temporaryArray
+           })
+           console.log(temporaryArray);
+            for (let i = 0; i < temporaryArray.length; i++) {
+  
+            }
+            // const streamingServices = response.data.streams;
+            // setStreamingState(streamingServices);
+            // const streamingEl = document.getElementById('streaming');
+            //console.log(streamingState);
+            console.log()
+          })
+        })
+    
+
          
     } catch (err) {
       console.error(err);
     }
   };
 
-  const getStreamingServices = async () => {
+  // const getStreamingServices = async (props) => {
 
-    const movieTitle = movieState.title;
+  //   const movieTitle = movieState.title;
 
-    const optionsParams = {
-      method: 'GET',
-      url: 'https://mdblist.p.rapidapi.com/',
-      params: [],
-      headers: {
-        'X-RapidAPI-Host': 'mdblist.p.rapidapi.com',
-        'X-RapidAPI-Key': '384177d302msh9d8e58d9f31ffccp1bfa57jsnf3cea9fef042',
-      },
-    };
-    axios
-      .request({
-          ...optionsParams,
-          params: { s: `${movieTitle}` }
-        })
-      .then(function (response) {
-        console.log(response.data);
-        const traktid = response.data.search[0].traktid;
-        const traktidOptions = {
-            ...optionsParams,
-            params: { t: `${traktid}` }
-        };
-        axios.request(traktidOptions).then(function (response) {
+  //   const optionsParams = {
+  //     method: 'GET',
+  //     url: 'https://mdblist.p.rapidapi.com/',
+  //     params: [],
+  //     headers: {
+  //       'X-RapidAPI-Host': 'mdblist.p.rapidapi.com',
+  //       'X-RapidAPI-Key': '384177d302msh9d8e58d9f31ffccp1bfa57jsnf3cea9fef042',
+  //     },
+  //   };
+  //   axios
+  //     .request({
+  //         ...optionsParams,
+  //         params: { s: `${movieTitle}` }
+  //       })
+  //     .then(function (response) {
+  //       console.log(response.data);
+  //       const traktid = response.data.search[0].traktid;
+  //       const traktidOptions = {
+  //           ...optionsParams,
+  //           params: { t: `${traktid}` }
+  //       };
+  //       axios.request(traktidOptions).then(function (response) {
 
-          // if (!response.ok) {
-          //   return false;
-          // }
+  //         // if (!response.ok) {
+  //         //   return false;
+  //         // }
 
-          const streamingServices = response.data.streams;
-          setStreamingState(streamingServices);
-          //console.log(streamingState);
-          console.log(response.data.streams)
+  //         const streamingServices = response.data.streams;
+  //         setStreamingState(streamingServices);
+  //         //console.log(streamingState);
+  //         console.log(response.data.streams)
 
-          let temporaryArray = [];
+  //         let temporaryArray = [];
 
-          for (let i = 0; i < response.data.streams.length; i++){
+  //         for (let i = 0; i < response.data.streams.length; i++){
 
-            temporaryArray.push(response.data.streams[i].name)
+  //           temporaryArray.push(response.data.streams[i].name)
 
-          //  const streamingEl = document.getElementById('streaming');
-          //  const streamingElInput = document.createElement("p");
-          //  streamingElInput.innerHTML(response.data.streams[i].name); 
-          //  console.log(response.data.streams[i].name)
-          //  streamingEl.append(streamingElInput);
-         }
-         setStreamingState({
-           other: temporaryArray
-         })
-         console.log(temporaryArray);
-          for (let i = 0; i < temporaryArray.length; i++) {
+  //         //  const streamingEl = document.getElementById('streaming');
+  //         //  const streamingElInput = document.createElement("p");
+  //         //  streamingElInput.innerHTML(response.data.streams[i].name); 
+  //         //  console.log(response.data.streams[i].name)
+  //         //  streamingEl.append(streamingElInput);
+  //        }
+  //        setStreamingState({
+  //          other: temporaryArray
+  //        })
+  //        console.log(temporaryArray);
+  //         for (let i = 0; i < temporaryArray.length; i++) {
 
-          }
-          // const streamingServices = response.data.streams;
-          // setStreamingState(streamingServices);
-          // const streamingEl = document.getElementById('streaming');
-          console.log(streamingState);
-        })
-      })
-  }
+  //         }
+  //         // const streamingServices = response.data.streams;
+  //         // setStreamingState(streamingServices);
+  //         // const streamingEl = document.getElementById('streaming');
+  //         console.log(streamingState);
+  //       })
+  //     })
+  // }
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -141,7 +203,7 @@ const SelectMovie = () => {
 
     getMovie();
 
-    getStreamingServices();
+    // getStreamingServices();
 
     // hideDiv();
   };
@@ -164,7 +226,7 @@ const SelectMovie = () => {
     e.preventDefault();
     findRandom();
     getMovie();
-    getStreamingServices();
+    //getStreamingServices();
   }
 
   const onGoBack = async(e) => {
