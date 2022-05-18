@@ -43,14 +43,7 @@ export function SearchResult(props) {
   // }
 
   function onSubmit(e) {
-    // let restaurantInfo = {
-    //   name: name, 
-    //   address: addressLines,
-    //   url: yelpBusinessURL,
-    //   phone: phone,
-    //   pickup: pickup,
-    //   delivery: delivery
-    // }
+
    console.log(name) 
   //  console.log (b)
    localStorage.setItem('restaurantInfo', JSON.stringify(name));
