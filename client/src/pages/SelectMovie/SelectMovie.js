@@ -16,7 +16,7 @@ const SelectMovie = () => {
 
   const [movieState, setMovieState] = useState({});
 
-  const [streamingState, setStreamingState] = useState({});
+  const [streamingState, setStreamingState] = useState([{}]);
 
   if (!Auth.loggedIn()) {
    return <Redirect to="/login" />
@@ -105,10 +105,11 @@ const SelectMovie = () => {
   
               temporaryArray.push(response.data.streams[i].name)
               console.log(temporaryArray);
+
            }
          
-           setStreamingState(streamingState => [...streamingState, `${temporaryArray}`])
 
+           setStreamingState(streamingState => [...streamingState, `${temporaryArray}`])
    
             // for (let i = 0; i < temporaryArray.length; i++) {
   
@@ -126,9 +127,9 @@ const SelectMovie = () => {
       console.error(err);
     }
   };
-
   
-  const streamingOutput = streamingState.map(item => <div style={{"margin-right" : "10px"}}>{item.name}</div>)
+  //const streamingOutput = streamingState.map(item => <div style={{"marginRight" : "10px"}} key={item.name}>{item.name}</div>)
+
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -249,8 +250,10 @@ const SelectMovie = () => {
             <p>{movieState.plot}</p>
           </div>
           <div className='streaming' id="streaming">
-            <h3 style={{"margin-right" : "10px"}}>Available on: </h3>
-            {streamingOutput}
+            <h3 style={{"marginRight" : "10px"}}>Available on: {streamingState.name}</h3>
+            {/* {streamingOutput} */}
+            {streamingState.map(item => <div style={{"marginRight" : "10px"}} key={item}>{item.name}</div>)}
+            
           </div>
         </div>
         <div className='button-to-dinner'>
