@@ -38,8 +38,8 @@ const SelectMovie = () => {
       return false;
     }
 
+    // OMDB api call
     try {
-
       const response = await fetch(`https://imdb-api.com/API/AdvancedSearch/${process.env.REACT_APP_IMDB_APIKEY}/?title_type=feature&release_date=${inputDate}&genres=${inputGenre}&countries=us&languages=en&count=100`);
 
       const jsonData = await response.json();
@@ -61,12 +61,15 @@ const SelectMovie = () => {
       setMovieState(movieData);
       console.log(movieState);
 
+      // takes the spinner off the page
       setIsLoading(false) 
 
+
+      //local storage save
       localStorage.setItem('movieInfo', JSON.stringify(movieData.title));
 
 
-
+      //RAPID API call start
       const optionsParams = {
         method: 'GET',
         url: 'https://mdblist.p.rapidapi.com/',
@@ -84,31 +87,22 @@ const SelectMovie = () => {
         .then(function (response) {
           console.log(response.data);
 
-          //const movieMatch = response.data.search.filter()
-          // const dataMatch = response.data.search.filter(response => response.data.search.year === movieState.year)
-          // console.log(dataMatch);
 
-          // const array = response.data.search;
-          // const found = array.find(arrayItem => arrayItem === movieData.title)
-          // console.log(found);
-
+          //Find Match within API Array
           const movieMatch = response.data.search.filter(movie => {
             return movie.title.includes(movieData.title)
           });
           console.log(movieMatch);
 
 
+          //Find TraktID
           const traktid = movieMatch[0].traktid;
           const traktidOptions = {
               ...optionsParams,
               params: { t: `${traktid}` }
           };
           axios.request(traktidOptions).then(function (response) {
-  
-            // if (!response.ok) {
-            //   return false;
-            // }
-  
+    
             const streamingServices = response.data.streams;
             setStreamingState(streamingServices);
             //console.log(streamingState);
@@ -122,22 +116,15 @@ const SelectMovie = () => {
               console.log(temporaryArray);
 
            }
-         
-
+           //set streaming state
            setStreamingState(streamingState => [...streamingState, `${temporaryArray}`])
    
-            // for (let i = 0; i < temporaryArray.length; i++) {
-  
-            // }
-
             if (streamingState) {
               console.log(streamingState)
-            } else return false;
+            } else return null;
           })
         })
-    
-
-         
+             
     } catch (err) {
       console.error(err);
     }
@@ -152,16 +139,7 @@ const SelectMovie = () => {
     findRandom();
 
     getMovie();
-
-    // getStreamingServices();
-
-    // hideDiv();
   };
-
-  // const hideDiv = () => {
-  //   const movieChoiceDiv = document.getElementById('selectMovieDiv');
-  //   movieChoiceDiv.classList.add('display-none');
-  // }
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -176,7 +154,6 @@ const SelectMovie = () => {
     e.preventDefault();
     findRandom();
     getMovie();
-    //getStreamingServices();
   }
 
   const onGoBack = async(e) => {
@@ -252,7 +229,6 @@ const SelectMovie = () => {
       </div>
 
       : <div className='main-results-div'>
-        {/* {isLoading ? <Spinner /> : getMovie} */}
         <div className='refresh-div'>
           <button className='refresh-button-movie' onClick={onGoBack}><RiArrowGoBackFill /></button>
           <button className='refresh-button-movie' onClick={onRefresh}><FiRefreshCw /></button>
