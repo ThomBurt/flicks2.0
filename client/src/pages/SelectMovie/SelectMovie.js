@@ -57,7 +57,7 @@ const SelectMovie = () => {
         image: selectedMovie.image,
         plot: selectedMovie.plot
       };
-      console.log(movieData);
+      //console.log(movieData);
       setMovieState(movieData);
       console.log(movieState);
 
@@ -83,7 +83,22 @@ const SelectMovie = () => {
           })
         .then(function (response) {
           console.log(response.data);
-          const traktid = response.data.search[0].traktid;
+
+          //const movieMatch = response.data.search.filter()
+          // const dataMatch = response.data.search.filter(response => response.data.search.year === movieState.year)
+          // console.log(dataMatch);
+
+          // const array = response.data.search;
+          // const found = array.find(arrayItem => arrayItem === movieData.title)
+          // console.log(found);
+
+          const movieMatch = response.data.search.filter(movie => {
+            return movie.title.includes(movieData.title)
+          });
+          console.log(movieMatch);
+
+
+          const traktid = movieMatch[0].traktid;
           const traktidOptions = {
               ...optionsParams,
               params: { t: `${traktid}` }
@@ -250,7 +265,7 @@ const SelectMovie = () => {
             <p>{movieState.plot}</p>
           </div>
           <div className='streaming' id="streaming">
-            <h3 style={{"marginRight" : "10px"}}>Available on: {streamingState.name}</h3>
+            <h4 style={{"marginRight" : "10px"}}>Available on:</h4>
             {/* {streamingOutput} */}
             {streamingState.map(item => <div style={{"marginRight" : "10px"}} key={item}>{item.name}</div>)}
             
