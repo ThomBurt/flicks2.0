@@ -16,12 +16,17 @@ width: 100%;
 max-width: 1300px;
 margin-right: auto;
 margin-left: auto;
-padding-right: 50px;
-padding-left: 50px;
+padding-right: 60px;
+padding-left: 60px;
 
-@media screen and (max-width: 991px) {
-    padding-right: 30px;
-    padding-left: 30px;
+@media screen and (max-width: 800px) {
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+@media screen and (max-width: 670px) {
+    padding-right: 10px;
+    padding-left: 10px;
 }
 `;
 

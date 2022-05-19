@@ -26,6 +26,7 @@
     background-color: rgba(0,0,0,.6);
     flex-direction: column;
     color: white;
+    border: red 2px solid;
 }
 
 .main-header {

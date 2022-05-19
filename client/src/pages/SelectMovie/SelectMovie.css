@@ -16,6 +16,7 @@
   align-items: center;
   color: white;
   margin: 0;
+  border: 2px red solid;
 }
 
 .div-body-under-main {
@@ -26,6 +27,7 @@
   text-align: center;
   border: 1px solid white;
   padding: 10rem;
+  border: 2px red solid;
 }
 
 .dropdown-div {
