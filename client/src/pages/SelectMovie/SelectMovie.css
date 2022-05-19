@@ -5,7 +5,7 @@
 
 .main-body {
   background: url('https://ucarecdn.com/f611c3b4-252d-4b5d-926e-195d3b982b32/tysonmoultrieBQTHOGNHo08unsplash.jpg');
-  height: 89.2vh;
+  height: 100vh;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -26,8 +26,9 @@
   justify-content: center;
   text-align: center;
   border: 1px solid white;
-  padding: 10rem;
-  border: 2px red solid;
+  padding: 8rem;
+  border-radius: 7px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
 .dropdown-div {
@@ -92,26 +93,21 @@
 
 
 .main-results-div {
+  border-radius: 7px;
+  padding: 10px;
   flex-direction: column;
   text-align: center;
-  background-color: black;
+  background-color: rgba(0,0,0,.8);
   border: 1px solid white;
-  display: flex;
-  justify-content: center;
-  width: 50vw;
-  height: 85vh;
-}
-
-.main-results-div h1 {
-  text-decoration: dotted;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
 .movie-card-body {
-  margin: 10px;
+  margin: 5px;
 }
 
 .movie-img {
-  width: 280px;
+  width: 260px;
 }
 
 .button-to-dinner {
@@ -167,7 +163,11 @@
 }
 
 
-
+.streaming {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 
 
