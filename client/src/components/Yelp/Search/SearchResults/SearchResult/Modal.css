@@ -3,14 +3,16 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: #70aef6;
+    background: black;
     padding: 2rem;
     border-radius: 1rem;
     transition: 1s;
-    max-width: 30%;
+    max-height: calc(100vh - 210px);
+    overflow-y: auto;
+    max-width: 60%;
     z-index: 1000;
     color: white;
-    border-radius: 3px;
+    border-radius: 7px;
   }
   
   .close-button {
@@ -30,12 +32,14 @@
   .business-info-div {
     display: flex;
     flex-direction: column;
-    width: auto;
+    justify-content: center;
+    text-align: center;
   }
   
   .business-img {
+    justify-content: center;
     max-width: 100%;
-    max-height: 50%;
+    max-height: 30%;
     margin-bottom: 20px;
     border-radius: 3px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -52,6 +56,13 @@
     border-radius: 10px;
     transition: ease-in-out 0.2s;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  }
+
+
+  .map {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
   }
   
   

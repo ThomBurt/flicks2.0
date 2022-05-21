@@ -20,10 +20,10 @@ export function SearchBar(props) {
 
     return (
         <form onSubmit={submit}>
-            <div className="field has-addons">
+            <div className="div-under-form">
                 <div className='input-field-search'>
                     <div className="dinner-dropdown-div">
-                        <div>Dinner time!</div>
+                        <div className='margin-bottom'>Dinner time!</div>
                     <Form.Group className="">
                             {/* <Form.Label className="margin-right cuisine-txt" >Choose a cuisine!</Form.Label> */}
                             <Form.Select 
@@ -47,7 +47,7 @@ export function SearchBar(props) {
                             </Form.Group>
                     </div>
                     <div className="dinner-dropdown-div">
-                        <div className='margin-left'>Choose your location!</div>
+                        <div className='margin-bottom'>Choose your location!</div>
                         <input className={`input ${styles['input-control']}`}
                             onChange={(e) => setLocation(e.target.value)}
                             type="text"
@@ -55,7 +55,7 @@ export function SearchBar(props) {
                             placeholder="City or Zip"/>
                     </div>
                 </div>
-                <div className={`button ${styles['search-button']}`} onClick={submit}>
+                <div className='search-button' onClick={submit}>
                     <span className={`icon is-small ${styles['search-icon']}`}> <FaSearch /></span>
                 </div>
             </div>
