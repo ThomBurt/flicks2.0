@@ -76,7 +76,7 @@ const SelectMovie = () => {
         params: [],
         headers: {
           'X-RapidAPI-Host': 'mdblist.p.rapidapi.com',
-          'X-RapidAPI-Key': '384177d302msh9d8e58d9f31ffccp1bfa57jsnf3cea9fef042',
+          'X-RapidAPI-Key': `${process.env.REACT_APP_X_RAPID_API_KEY}`,
         },
       };
       axios
