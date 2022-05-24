@@ -12,6 +12,8 @@ import Signup from './pages/Signup';
 import SelectMovie from './pages/SelectMovie/SelectMovie.js';
 import {Search} from './components/Yelp/Search/Search';
 import SelectDrink from './pages/SelectDrink/SelectDrink';
+import Profile from './pages/Profile/Profile';
+import MyProfile from './components/Profile/MyProfile/MyProfile';
 
 
 const httpLink = createHttpLink({
@@ -65,6 +67,12 @@ function App() {
             </Route>
             <Route path="/drink">
               <SelectDrink />
+            </Route>
+            <Route path="/profile">
+              <Profile />
+            </Route>
+            <Route path="/my-profile">
+              <MyProfile />
             </Route>
           </Switch>
       </Router>

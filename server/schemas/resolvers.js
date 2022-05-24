@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Experience, Restaurant, DrinkCategories, Drink } = require('../models');
+const { User, Experience, Restaurant, Drink } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -29,8 +29,17 @@ const resolvers = {
     //   const params = username ? { username } : {};
     //   return Experience.find(params).sort({ createdAt: -1 });
     // }
+    experience: async () => {
+      return Experience.find();
+    },
     drink: async () => {
       return Drink.find();
+    },
+    dinner: async () => {
+      return Restaurant.find();
+    },
+    movie: async() => {
+      return Movie.find();
     }
   },
 
@@ -57,23 +66,30 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
+    updateUser: async (parent, args, context) => {
+      if (context.user) {
+        return await User.findByIdAndUpdate(context.user._id, args, { new: true });
+      }
+
+      throw new AuthenticationError('Not logged in');
+    },
 
 
-    // addExperience: async (parent, args, context) => {
-    //   if (context.user) {
-    //     const experience = await Experience.create({ ...args, username: context.user.username });
+    addExperience: async (parent, args, context) => {
+      if (context.user) {
+        const experience = await Experience.create({ ...args, username: context.user.username });
 
-    //     await User.findByIdAndUpdate(
-    //       { _id: context.user._id },
-    //       { $push: { experiences: experience._id } },
-    //       { new: true }
-    //     );
+        await User.findByIdAndUpdate(
+          { _id: context.user._id },
+          { $push: { experiences: experience._id } },
+          { new: true }
+        );
 
-    //     return experience;
-    //   }
+        return experience;
+      }
 
-    //   throw new AuthenticationError('You need to be logged in!');
-    // },
+      throw new AuthenticationError('You need to be logged in!');
+    },
   //   saveMovie: async (_parent, { movieData }, context) => {
   //     if (context.user) {
   //         const updatedUser = await User.findByIdAndUpdate(

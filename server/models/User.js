@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
+const experienceSchema = require('./Experience')
 
 const userSchema = new Schema(
   {
@@ -28,12 +29,7 @@ const userSchema = new Schema(
       required: true,
       minlength: 5
     },
-    experiences: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Experience'
-      }
-    ]
+    experiences: [experienceSchema]
   },
   {
     toJSON: {
@@ -56,6 +52,12 @@ userSchema.pre('save', async function(next) {
 userSchema.methods.isCorrectPassword = async function(password) {
   return bcrypt.compare(password, this.password);
 };
+
+
+userSchema.virtual("experienceCount").get(function() {
+  return this.experiences.length;
+});
+
 
 const User = model('User', userSchema);
 
