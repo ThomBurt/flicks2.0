@@ -13,12 +13,14 @@ mutation login($email: String!, $password: String!) {
 `;
 
 export const ADD_USER = gql`
-mutation addUser($username: String!, $email: String!, $password: String!) {
-  addUser(username: $username, email: $email, password: $password) {
+mutation addUser($username: String!, $firstName: String!, $lastName: String!, $email: String!, $password: String!) {
+  addUser(username: $username, firstName: $firstName, lastName: $lastName, email: $email, password: $password) {
     token
     user {
       _id
       username
+      firstName
+      lastName
     }
   }
 }
@@ -38,3 +40,23 @@ export const SAVE_MOVIE = gql`
         }
     }
 `;
+
+
+
+export const USER_UPDATE = gql `
+    mutation userUpdate($input: UserUpdateInput!) {
+        userUpdate(input: $input) {
+            _id
+            username
+            firstName
+            lastName
+            email
+            images {
+                url
+                public_id
+            }
+            headline
+            createdAt 
+        }
+    }
+`

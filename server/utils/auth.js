@@ -26,9 +26,26 @@ module.exports = {
 
     return req;
   },
+
   signToken: function ({ firstName, email, _id }) {
     const payload = { firstName, email, _id };
 
     return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
   },
+
+  authCheckMiddleware: function({req, res, next}) {
+    let token = req.body.token || req.query.token || req.headers.authorization;
+    if(token) {
+      jwt.verify(token, secret, { maxAge: expiration })
+      .then((result) => {
+        next()
+      })
+      .catch(error => console.log(error))
+    } else {
+      res.json({error: 'Unauthorized'})
+    }
+  }
+
 };
+
+

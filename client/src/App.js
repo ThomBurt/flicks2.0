@@ -13,7 +13,7 @@ import SelectMovie from './pages/SelectMovie/SelectMovie.js';
 import {Search} from './components/Yelp/Search/Search';
 import SelectDrink from './pages/SelectDrink/SelectDrink';
 import Profile from './pages/Profile/Profile';
-import MyProfile from './components/Profile/MyProfile/MyProfile';
+import MyProfile from './pages/Profile/Profile';
 
 
 const httpLink = createHttpLink({

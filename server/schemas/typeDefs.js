@@ -2,6 +2,9 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
 
+
+  scalar DataTime
+
   type Image {
       url: String
       public_id: String
@@ -48,8 +51,8 @@ const typeDefs = gql`
     headline: String
     images: [Image]
     experiences: [Experiences]
-    createdAt: String
-    updatedAt: String
+    createdAt: DataTime
+    updatedAt: DataTime
   }
 
 
@@ -103,7 +106,8 @@ const typeDefs = gql`
   input UserUpdateInput {
     username: String
     email: String
-    name: String
+    firstName: String
+    lastName: String
     images: [ImageInput]
     headline: String
   }
@@ -115,6 +119,11 @@ const typeDefs = gql`
   }
 
   # ---------------------------------------------------------------------------
+
+type Query {
+  profile: User!
+}
+
 
   type Query {
     me: User
@@ -130,8 +139,8 @@ const typeDefs = gql`
 
   type Mutation {
     login(email: String!, password: String!): Auth
-    addUser(username: String!, email: String!, password: String!): Auth
-    updateUser(input: UserUpdateInput): User!
+    addUser(username: String!, firstName: String!, lastName: String!, email: String!, password: String!): Auth
+    userUpdate(input: UserUpdateInput): User!
     addExperience(input: AddExperienceInput): Experiences!
   }
 

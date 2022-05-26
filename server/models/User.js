@@ -31,6 +31,7 @@ const userSchema = new Schema(
     },
     experiences: [experienceSchema]
   },
+  { timestamps: true },
   {
     toJSON: {
       virtuals: true

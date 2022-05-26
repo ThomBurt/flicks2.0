@@ -1,6 +1,7 @@
 const { AuthenticationError } = require('apollo-server-express');
 const { User, Experience, Restaurant, Drink } = require('../models');
 const { signToken } = require('../utils/auth');
+const { DateTimeResolver } = require('graphql-scalars');
 
 const resolvers = {
   Query: {
@@ -40,7 +41,18 @@ const resolvers = {
     },
     movie: async() => {
       return Movie.find();
-    }
+    },
+    profile: async (parent, args, context) => {
+      if (context.user) {
+        const userData = await User.findOne({ _id: context.user._id })
+          .select('-__v -password')
+          .populate('experiences');
+
+        return userData;
+      }
+
+      // throw new AuthenticationError('Not logged in');
+    },
   },
 
   Mutation: {
@@ -66,7 +78,8 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    updateUser: async (parent, args, context) => {
+
+    userUpdate: async (parent, args, context) => {
       if (context.user) {
         return await User.findByIdAndUpdate(context.user._id, args, { new: true });
       }

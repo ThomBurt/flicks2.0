@@ -1,31 +1,67 @@
-import React from 'react'
+import React, { useState, useMemo } from 'react';
+import {useQuery} from '@apollo/react-hooks';
+import omitDeep from 'omit-deep';
 
 import { RiPencilFill } from 'react-icons/ri';
 
 import './profile-top.css';
 
+import { PROFILE } from '../../../utils/queries';
+
 
 const ProfileTop = () => {
+
+    const [values, setValues] = useState({
+        username: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        images: [],
+        headline: '',
+        createdAt: ''
+    });
+
+
+
+    const {data} = useQuery(PROFILE);
+
+    useMemo(()=> {
+        if (data) {
+           // console.log(data.profile)
+            setValues({
+                username: data.profile.username,
+                firstName: data.profile.firstName,
+                lastName: data.profile.lastName,
+                email: data.profile.email,
+                images: omitDeep(data.profile.images, ["__typename"]),
+                headline: data.profile.headline,
+                createdAt: data.profile.createdAt
+            });
+        }
+    }, [data]);
+
+
+   //destructure
+   const { username, firstName, lastName, images, headline, createdAt } = values;
+
+//    const image = () => {
+//        console.log(images)
+//    }
+//    image()
+
     return (
         <div className='main-my-profile-div'>
             <div className='my-profile-main'>
                 <div className='top-profile-bar'>
                     <div className='image-and-header'>
                         <div>
-                            <img className="my-profile-img" src="https://ucarecdn.com/98a2c335-a1af-4262-bf9c-c8f76898f5f6/Untitleddesign.png" alt="profile-pic"></img>
+                            <img className="my-profile-img" src={images} alt="profile-pic"></img>
                         </div>
                         <div> 
                             <div>
-                                <h1>Thom Burt</h1>
-                                <h5>1.5k friends</h5>
-                                <div>
-                                    <img className='friend-profile-img' src="https://via.placeholder.com/40" alt="friends"></img>
-                                    <img className='friend-profile-img' src="https://via.placeholder.com/40" alt="friends"></img>
-                                    <img className='friend-profile-img' src="https://via.placeholder.com/40" alt="friends"></img>
-                                    <img className='friend-profile-img' src="https://via.placeholder.com/40" alt="friends"></img>
-                                    <img className='friend-profile-img' src="https://via.placeholder.com/40" alt="friends"></img>
-                                </div>
-                                <p>"Probably thinking of pasta 90% of the day!"</p>
+                                <h1>{firstName} {lastName}</h1>
+                                <h5>@{username}</h5>
+                                <p>{headline}</p>
                             </div>
                         </div>
                     </div>
@@ -36,7 +72,7 @@ const ProfileTop = () => {
                                 window.location.href='/update-profile';
                                 }}><span><RiPencilFill/> </span>Edit Profile
                             </button>
-                            <p>Been 'Flicks-ing' since 2022</p>
+                            <p>Been 'Flicks-ing' since <span className='createdAtSpan'>{createdAt.slice(0, 4)}</span></p>
                         </div>
                     </div>
 

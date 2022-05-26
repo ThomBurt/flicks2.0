@@ -9,3 +9,21 @@ export const GET_ME = gql`
     }
   }
 `;
+
+export const PROFILE = gql `
+    query {
+        profile {
+            _id
+            username
+            firstName
+            lastName
+            email
+            images {
+                url
+                public_id
+            }
+            headline
+            createdAt 
+        }
+    }    
+`

@@ -1,4 +1,8 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
+import {useQuery} from '@apollo/react-hooks';
+import omitDeep from 'omit-deep';
+
+import { PROFILE } from '../../../utils/queries';
 
 import { Link } from 'react-router-dom';
 
@@ -14,48 +18,83 @@ import './Profilenav.css';
 
 
 const ProfileNav = () => {
+
+    const [values, setValues] = useState({
+        username: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        images: [],
+        headline: '',
+        createdAt: ''
+    });
+
+
+
+    const {data} = useQuery(PROFILE);
+
+    useMemo(()=> {
+        if (data) {
+           // console.log(data.profile)
+            setValues({
+                username: data.profile.username,
+                firstName: data.profile.firstName,
+                lastName: data.profile.lastName,
+                email: data.profile.email,
+                images: omitDeep(data.profile.images, ["__typename"]),
+                headline: data.profile.headline,
+                createdAt: data.profile.createdAt
+            });
+        }
+    }, [data]);
+
+
+   //destructure
+   const { username, firstName, lastName, images } = values;
+
     return (
         <div className='main-div-updateProfile'>
             <div>
-                <nav class="menu" tabindex="0">
-                        <div class="smartphone-menu-trigger"></div>
-                    <header class="avatar">
+                <nav className="menu" tabIndex="0">
+                        <div className="smartphone-menu-trigger"></div>
+                    <header className="avatar">
                             <img className='profile-img' src="https://ucarecdn.com/98a2c335-a1af-4262-bf9c-c8f76898f5f6/Untitleddesign.png" alt="profile-pic"/>
-                        <h2>Thom Burt</h2>
+                            <h1>{firstName} {lastName}</h1>
+                            <h5>@{username}</h5>
                     </header>
                         <ul className='updateProfileUl'>
 
-                            <li tabindex="0" className='updateProfileLi'>
+                            <li tabIndex="0" className='updateProfileLi'>
                                 <Link to="/my-profile" style={{color: 'black', textDecoration: 'none'}} onClick={event => window.location.href='/my-profile'}>
                                     <span>Profile</span> <span><CgProfile /></span>
                                 </Link>
                             </li>
 
-                            <li tabindex="0" className='updateProfileLi'>
+                            <li tabIndex="0" className='updateProfileLi'>
                                 <Link to="/update-profile" style={{color: 'black', textDecoration: 'none'}} onClick={event => window.location.href='/update-profile'}>
                                     <span>Update Profile</span> <span><VscEdit /></span>
                                 </Link>
                             </li>
 
-                            <li tabindex="0" className='updateProfileLi'>
+                            <li tabIndex="0" className='updateProfileLi'>
                                 <Link to="/history" style={{color: 'black', textDecoration: 'none'}} onClick={event => window.location.href='/history'}>
                                     <span>Experiences</span> <span><BsHouseDoor/></span>
                                 </Link>
                             </li>
 
-                            <li tabindex="0" className='updateProfileLi'>
+                            <li tabIndex="0" className='updateProfileLi'>
                                 <Link to="/forgot-password" style={{color: 'black', textDecoration: 'none'}} onClick={event => window.location.href='/forgot-password'}>
                                     <span>Password</span> <span><RiLockPasswordLine /></span>
                                 </Link>
                             </li>
 
-                            <li tabindex="0" className='updateProfileLi'>
+                            <li tabIndex="0" className='updateProfileLi'>
                                 <Link to="/friends" style={{color: 'black', textDecoration: 'none'}}  onClick={event => window.location.href='/friends'}>
                                     <span>Friends</span> <span><FaUserFriends /></span>
                                 </Link>
                             </li>
 
-                            <li tabindex="0" className='updateProfileLi'>
+                            <li tabIndex="0" className='updateProfileLi'>
                                 <Link to="/settings" style={{color: 'black', textDecoration: 'none'}} onClick={event => window.location.href='/settings'}>
                                     <span>Settings</span> <span><FiSettings/></span>
                                 </Link>
