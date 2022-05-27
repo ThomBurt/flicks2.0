@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import { IconContext } from 'react-icons/lib'
+import { IconContext } from 'react-icons/lib';
+import {useQuery} from '@apollo/react-hooks';
 import {
     Nav,
     NavContainer,
@@ -13,6 +14,12 @@ import {
     NavLinks
 } from './Navbar.elements';
 
+import './navbar.css';
+import { PROFILE } from '../../utils/queries';
+
+
+import Dropdown from './Dropdown/Dropdown';
+
 import Auth from "../../utils/auth";
 
 //const logo = require('../Assets/img/icon-BLACK.png')
@@ -22,6 +29,66 @@ export const NavBar = () => {
 
     
     const [click, setClick] = useState(false);
+
+    const [dropdown, setDropdown] = useState(false);
+
+    const onMouseEnter = () => {
+        if(window.innerWidth < 960) {
+            setDropdown(false)
+        } else {
+            setDropdown(true)
+        }
+    }
+
+    const onMouseLeave = () => {
+        if(window.innerWidth < 960) {
+            setDropdown(false)
+        } else {
+            setDropdown(false)
+        }
+    }
+
+    const {data} = useQuery(PROFILE);
+
+    const [values, setValues] = useState({
+        username: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        images: [],
+        headline: '',
+        createdAt: ''
+    });
+
+    useMemo(()=> {
+        if (data) {
+           // console.log(data.profile)
+            setValues({
+                username: data.profile.username,
+                firstName: data.profile.firstName,
+                lastName: data.profile.lastName,
+                email: data.profile.email,
+                images: data.profile.images,
+                headline: data.profile.headline,
+                createdAt: data.profile.createdAt
+            });
+        }
+    }, [data]);
+
+    const { images } = values;
+
+    const topUserImage = () => {
+        <div>
+                                    {images.map((image) => (
+                                <img
+                                    src={image.url}
+                                    key={image.public_id}
+                                    alt={image.public_id}
+                                    className="profile-img"
+                                />
+                            ))}
+        </div>
+    }
 
     const handleClick = () => setClick(!click);
    // const closeMobileMenu = () => setClick(false);
@@ -46,6 +113,30 @@ export const NavBar = () => {
                 <NavItem>
                 <NavLinks to="/history" onClick={event => window.location.href='/history'}>
                     History
+                </NavLinks>
+                </NavItem>
+
+                {/* <NavItem>
+                <NavLinks to="/profile" onClick={event => window.location.href='/my-profile'}>
+                    Profile
+                </NavLinks>
+                </NavItem> */}
+
+                <NavItem>
+                <NavLinks to="/profile" onClick={event => window.location.href='/my-profile'}
+                 onMouseEnter={onMouseEnter}
+                 onMouseLeave={onMouseLeave}>
+                            {images.map((image) => (
+                                <img
+                                    src={image.url}
+                                    key={image.public_id}
+                                    alt={image.public_id}
+                                    className="nav-profile-img"
+                                />
+                            ))}
+                    {/* <img className='nav-profile-img' 
+                    src="https://ucarecdn.com/98a2c335-a1af-4262-bf9c-c8f76898f5f6/Untitleddesign.png" alt="friends"></img> */}
+                    {dropdown && <Dropdown />}
                 </NavLinks>
                 </NavItem>
             

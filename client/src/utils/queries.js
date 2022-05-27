@@ -1,5 +1,7 @@
 import { gql } from '@apollo/client';
 
+import { USER_INFO } from './Fragments';
+
 export const GET_ME = gql`
   {
     me {
@@ -8,4 +10,13 @@ export const GET_ME = gql`
       email
     }
   }
+`;
+
+export const PROFILE = gql`
+    query {
+        profile {
+            ...userInfo
+        }
+    }
+    ${USER_INFO}
 `;

@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
+const experienceSchema = require('./Experience')
 
 const userSchema = new Schema(
   {
@@ -23,18 +24,26 @@ const userSchema = new Schema(
       unique: true,
       match: [/.+@.+\..+/, 'Must match an email address!']
     },
+    images: {
+      type: Array,
+        default: [
+            {
+                url: 'https://ucarecdn.com/4b1d7bf6-5bc7-4840-a699-d1b08b3aaa37/appicon.png',
+                public_id: Date.now
+            }
+        ]
+    },
+    headline: {
+      type: String
+    },
     password: {
       type: String,
       required: true,
       minlength: 5
     },
-    experiences: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Experience'
-      }
-    ]
+    experiences: [experienceSchema]
   },
+  { timestamps: true },
   {
     toJSON: {
       virtuals: true
@@ -56,6 +65,12 @@ userSchema.pre('save', async function(next) {
 userSchema.methods.isCorrectPassword = async function(password) {
   return bcrypt.compare(password, this.password);
 };
+
+
+userSchema.virtual("experienceCount").get(function() {
+  return this.experiences.length;
+});
+
 
 const User = model('User', userSchema);
 

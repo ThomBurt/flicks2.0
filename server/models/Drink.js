@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const drinkSchema = new Schema({
+  drinkId: {
+    type: String,
+    required: true,
+  },
   name: {
     type: String,
     required: true,
@@ -14,15 +18,6 @@ const drinkSchema = new Schema({
   image: {
     type: String
   },
-  ingredients: {
-      type: String
-  },
-  category: {
-    type: Schema.Types.ObjectId,
-    ref: 'DrinkCategories',
-    required: true
-  },
-  createdAt: String
 });
 
 const Drink = mongoose.model('Drink', drinkSchema);

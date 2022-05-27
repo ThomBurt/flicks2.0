@@ -1,26 +1,34 @@
 .main-div {
     background: url('https://ucarecdn.com/7f4b67a2-a1c4-42ce-824c-20223caa12b4/nathandumlaoEdULZpOKsUEunsplash.jpg');
-    height: 91vh;
+    height: 100vh;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     display: flex;
   }
+
+  .div-to-center-all {
+    display: flex;
+    justify-content: center;
+    /* border: 1px green solid; */
+  }
   
   .div-under-main {
     border: 1px black solid;
-    background-color: rgba(0,0,0,0.5);
-    margin: 60px;
-    height: 40%;
-    padding: 100px;
+    background-color: rgba(0,0,0,0.7);
+    height: 80%;
+    width: 50%;
+    padding: 20px;
     justify-content: center;
     border-radius: 1.5em;
+    /* border: 1px blue solid; */
     box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.6);
   }
 
   .object-div {
       justify-content: center;
       text-align: center;
+      /* border: 1px red solid; */
   }
 
  
@@ -31,6 +39,7 @@
   }
   
   .pw-input {
+    display: flex;
     color: white;
     font-size: 14px;
     letter-spacing: 1px;

@@ -6,12 +6,15 @@ const path = require('path');
 
 // import our typeDefs and resolvers
 const { typeDefs, resolvers } = require('./schemas');
-const { authMiddleware } = require('./utils/auth');
+const { authMiddleware, authCheckMiddleware } = require('./utils/auth');
 const db = require('./config/connection');
+
+const cloudinary = require('cloudinary');
 
 
 // cors
 var cors = require('cors');
+const bodyParser = require('body-parser');
 
 
 const PORT = process.env.PORT || 3001;
@@ -34,6 +37,8 @@ startServer();
 
 // Cors
 app.use(cors());
+// body parse middleware
+app.use(bodyParser.json({ limit: '5mb' }))
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -72,6 +77,47 @@ app.get('/history', (req, res) => {
 app.get('/drink', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
+
+
+
+// Cloudinary config
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
+
+
+//upload image to cloudinary
+app.post('/uploadimages', (req, res) => {
+  cloudinary.uploader.upload(
+      req.body.image,
+      (result) => {
+          console.log(result);
+          res.send({
+              // url: result.url,
+              url: result.secure_url,
+              public_id: result.public_id
+          });
+      },
+      {
+          public_id: `${Date.now()}`, // public name
+          resource_type: 'auto' // JPEG, PNG
+      }
+  );
+});
+
+// remove image
+app.post('/removeimage', (req, res) => {
+  let image_id = req.body.public_id;
+
+  cloudinary.uploader.destroy(image_id, (error, result) => {
+      if (error) return res.json({ success: false, error });
+      res.send('ok');
+  });
+});
+
+
 
 db.once('open', () => {
   app.listen(PORT, () => {
