@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Experience, Restaurant, Drink } = require('../models');
+const { User, Experience, Restaurant, Drink, Movie } = require('../models');
 const { signToken } = require('../utils/auth');
 const { DateTimeResolver } = require('graphql-scalars');
 
@@ -106,18 +106,40 @@ const resolvers = {
 
       throw new AuthenticationError('You need to be logged in!');
     },
-  //   saveMovie: async (_parent, { movieData }, context) => {
-  //     if (context.user) {
-  //         const updatedUser = await User.findByIdAndUpdate(
-  //             { _id: context.user._id },
-  //             { $push: { savedMovies: movieData } },
-  //             { new: true }
-  //         );
-  //         return updatedUser;
-  //     }
-  //     throw new AuthenticationError('You need to be logged in!');
-  // },
+
+    // saveMovie: async (parent, args, context) => {
+    //   if (context.user) {
+    //     const movie = await Movie.create({ ...args, username: context.user.username });
+
+    //     await Experience.create(
+    //       { _id: context.user._id },
+    //       { $push: { movies: movie._id } },
+    //       { new: true }
+    //     );
+
+    //     return movie;
+    //   }
+    //   throw new AuthenticationError('You need to be logged in!');
+    // },
+    saveMovie: async (parent, args, context) => {
+      if (context.user) {
+        const movie = await Movie.create({ ...args, username: context.user.username });
+        //return await User.findByIdAndUpdate(context.user._id, args.input, { new: true });
+        await User.findByIdAndUpdate(
+          { _id: context.user._id },
+          { $push: { movies: movie._id } },
+          { new: true }
+        );
+
+        return movie;
+      }
+
+      throw new AuthenticationError('Not logged in');
+    },
   }
 };
 
 module.exports = resolvers;
+
+
+

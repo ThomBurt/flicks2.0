@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
-const experienceSchema = require('./Experience')
+const experienceSchema = require('./Experience');
+const dateFormat = require('../utils/dateFormat');
 
 const userSchema = new Schema(
   {
@@ -41,7 +42,22 @@ const userSchema = new Schema(
       required: true,
       minlength: 5
     },
-    experiences: [experienceSchema]
+    experiences: {
+      type: Schema.Types.ObjectId,
+      ref: 'Experience'
+    },
+    movies: {
+      type: Schema.Types.ObjectId,
+      ref: 'Movie'
+    },
+    dinner: {
+      type: Schema.Types.ObjectId,
+      ref: 'Restaurant'
+    },
+    drinks: {
+      type: Schema.Types.ObjectId,
+      ref: 'Drink'
+    },
   },
   { timestamps: true },
   {

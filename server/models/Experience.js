@@ -3,20 +3,30 @@ const dateFormat = require('../utils/dateFormat');
 
 const experienceSchema = new Schema(
     {
-        movie: {
+        experienceId: {
             type: String,
-            required: true
+            required: true,
         },
+        movie: 
+            {
+              type: Schema.Types.ObjectId,
+              ref: 'Movie'
+            }
+          ,
 
-        meal: {
-            type: String,
-            required: true
-        },
+        restaurant: 
+            {
+              type: Schema.Types.ObjectId,
+              ref: 'Restaurant'
+            }
+          ,
 
-        drink: {
-            type: String,
-            required: true
-        },
+        drink: 
+            {
+              type: Schema.Types.ObjectId,
+              ref: 'Drink'
+            }
+          ,
 
         createdAt: {
             type: Date,

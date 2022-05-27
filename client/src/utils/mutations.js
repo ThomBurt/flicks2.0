@@ -28,23 +28,6 @@ mutation addUser($username: String!, $firstName: String!, $lastName: String!, $e
 }
 `;
 
-//     add?    _id username email
-export const SAVE_MOVIE = gql`
-    mutation saveMovie($movieData: MovieInput!) {
-        saveMovie(movieData: $movieData) {
-        savedMovies {
-          movieId,
-          title,
-          year,
-          image,
-          plot
-          }
-        }
-    }
-`;
-
-
-
 // export const USER_UPDATE = gql `
 //     mutation userUpdate($input: UserUpdateInput!) {
 //         userUpdate(input: $input) {
@@ -70,3 +53,33 @@ export const USER_UPDATE = gql`
     }
     ${USER_INFO}
 `;
+
+
+// export const SAVE_MOVIE = gql`
+//     mutation saveMovie($movieData: MovieInput!) {
+//         saveMovie(movieData: $movieData) {
+//         savedMovies {
+//           title,
+//           year,
+//           image,
+//           plot,
+//           streaming 
+//           }
+//         }
+//     }
+// `;
+
+export const SAVE_MOVIE = gql`
+    mutation saveMovie($title: String!, $year: String, $plot: String, $image_url: String!) {
+        saveMovie(title: $title, year: $year, plot: $plot, image_url: $image_url) {
+        savedMovies {
+          title,
+          year,
+          image,
+          plot,
+          streaming 
+          }
+        }
+    }
+`;
+

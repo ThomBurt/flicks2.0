@@ -8,6 +8,9 @@ import axios from 'axios';
 import { FiRefreshCw } from "react-icons/fi";
 import { RiArrowGoBackFill } from "react-icons/ri";
 
+import {SAVE_MOVIE} from '../../utils/mutations';
+import { useMutation } from '@apollo/react-hooks';
+
 const SelectMovie = () => {
 
   const [isLoading, setIsLoading] = useState(false);
@@ -28,6 +31,11 @@ const SelectMovie = () => {
     random = Math.floor(Math.random() * max)
     console.log(random)
   };
+
+  //mutation
+  //const addMovie = useMutation(SAVE_MOVIE)
+
+
 
   const getMovie = async(props) => {
     setIsLoading(true);
@@ -67,6 +75,8 @@ const SelectMovie = () => {
 
       //local storage save
       localStorage.setItem('movieInfo', JSON.stringify(movieData.title));
+
+
 
 
       //RAPID API call start
@@ -139,6 +149,7 @@ const SelectMovie = () => {
     findRandom();
 
     getMovie();
+
   };
 
   const handleChange = (event) => {

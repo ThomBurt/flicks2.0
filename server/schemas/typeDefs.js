@@ -10,12 +10,15 @@ const typeDefs = gql`
       public_id: String
   }
 
+  
   type Movie {
     _id: ID!
     title: String
     year: String
     plot: String
+    username: String
     image_url: String
+    streaming: [String]
   }
 
   type Dinner {
@@ -35,11 +38,11 @@ const typeDefs = gql`
 
   type Experiences {
     _id: ID!
+    user: [User]
     movie: [Movie]
     dinner: [Dinner]
     drink: [Drink]
     createdAt: String
-    updatedAt: String
   }
 
   type User {
@@ -51,6 +54,9 @@ const typeDefs = gql`
     headline: String
     images: [Image]
     experiences: [Experiences]
+    movie: [Movie]
+    dinner: [Dinner]
+    drink: [Drink]
     createdAt: DataTime
     updatedAt: DataTime
   }
@@ -88,6 +94,7 @@ const typeDefs = gql`
     year: String
     plot: String
     image_url: String
+    streaming: [String]
   }
 
   input DinnerInput {
@@ -110,12 +117,17 @@ const typeDefs = gql`
     lastName: String
     images: [ImageInput]
     headline: String
-  }
-
-  input AddExperienceInput {
+    experiences: [ExperienceInput]
     movie: [MovieInput]
     dinner: [DinnerInput]
     drink: [DrinkInput]
+  }
+
+  input ExperienceInput {
+    movie: [MovieInput]
+    dinner: [DinnerInput]
+    drink: [DrinkInput]
+    createdAt: String
   }
 
   # ---------------------------------------------------------------------------
@@ -141,7 +153,10 @@ type Query {
     login(email: String!, password: String!): Auth
     addUser(username: String!, firstName: String!, lastName: String!, email: String!, password: String!, image: String): Auth
     userUpdate(input: UserUpdateInput): User!
-    addExperience(input: AddExperienceInput): Experiences!
+    saveMovie(movieId: ID!, title: String, year: String, plot: String, image_url: String, streaming: [String]): Movie!
+    saveDinner(input: DinnerInput): Dinner!
+    saveDrink(input: DrinkInput): Drink!
+    addExperience(input: ExperienceInput): Experiences!
   }
 
 
