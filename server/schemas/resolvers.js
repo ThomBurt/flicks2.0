@@ -81,7 +81,10 @@ const resolvers = {
 
     userUpdate: async (parent, args, context) => {
       if (context.user) {
-        return await User.findByIdAndUpdate(context.user._id, args, { new: true });
+        console.log(args)
+        //return await User.findByIdAndUpdate(context.user._id, args.input, { new: true });
+        const updatedUser = await User.findByIdAndUpdate(context.user._id, args.input, { new: true }).exec();
+        return updatedUser
       }
 
       throw new AuthenticationError('Not logged in');

@@ -1,5 +1,7 @@
 import { gql } from '@apollo/client';
 
+import { USER_INFO } from './Fragments';
+
 export const LOGIN_USER = gql`
 mutation login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
@@ -43,20 +45,28 @@ export const SAVE_MOVIE = gql`
 
 
 
-export const USER_UPDATE = gql `
+// export const USER_UPDATE = gql `
+//     mutation userUpdate($input: UserUpdateInput!) {
+//         userUpdate(input: $input) {
+//             _id
+//             username
+//             firstName
+//             lastName
+//             email
+//             images {
+//                 url
+//                 public_id
+//             }
+//             headline
+//             createdAt 
+//         }
+//     }
+// `
+export const USER_UPDATE = gql`
     mutation userUpdate($input: UserUpdateInput!) {
         userUpdate(input: $input) {
-            _id
-            username
-            firstName
-            lastName
-            email
-            images {
-                url
-                public_id
-            }
-            headline
-            createdAt 
+            ...userInfo
         }
     }
-`
+    ${USER_INFO}
+`;

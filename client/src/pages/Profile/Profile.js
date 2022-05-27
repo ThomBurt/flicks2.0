@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
+//import { AuthContext } from '../../Context/authContext';
 import { toast } from 'react-toastify';
 import {useQuery, useMutation} from '@apollo/react-hooks';
 // import {gql} from 'apollo-boost';
@@ -20,8 +21,6 @@ import { PROFILE } from '../../utils/queries';
 
 const MyProfile = () => {
 
-    //const { state } = useContext();
-
     const [values, setValues] = useState({
         username: '',
         firstName: '',
@@ -35,16 +34,17 @@ const MyProfile = () => {
 
     const {data} = useQuery(PROFILE);
 
-    useMemo(()=> {
+    useEffect(()=> {
         if (data) {
             console.log(data.profile)
             setValues({
-                //...values,
+               // ...values,
                 username: data.profile.username,
                 firstName: data.profile.firstName,
                 lastName: data.profile.lastName,
                 email: data.profile.email,
-                images: omitDeep(data.profile.images, ["__typename"]),
+                //images: omitDeep(data.profile.images, ["__typename"]),
+                images: data.profile.images,
                 headline: data.profile.headline,
             });
         }
@@ -100,7 +100,7 @@ const MyProfile = () => {
                   .then(response => {
                     setLoading(false)
                     console.log('Cloudinary Upload', response)
-                    setValues({...values, images: [...images, response.data]})
+                    setValues({ ...values, images: [response.data] })                   
                   })
                   .catch(error => {
                       setLoading(false)
@@ -115,6 +115,21 @@ const MyProfile = () => {
         }
     }
 
+    const profileImage = () => {
+         <div>
+            {/* <img src={images[0].url} alt="img" className="thom-img">
+            </img> */}
+            {images.map((image) => (
+                <img
+                    src={image.url}
+                    key={image.public_id}
+                    alt={image.public_id}
+                    style={{ height: '100px' }}
+                    className="json-div-test"
+                />
+            ))}
+        </div>
+    }
 
     return (
         <div className='main-my-profile-div'>
@@ -128,7 +143,7 @@ const MyProfile = () => {
                 <div className='post-div-under-main'>
                                 <div className='recent-act-div-profile'>
                                     {/* <RecentActivity /> */}
-                                   
+                                   {profileImage}
                                 </div>
                                 {/* <div className='post-div'>
                                     <Post />
@@ -141,7 +156,8 @@ const MyProfile = () => {
                                             <div className='input-div'>
                                                     <label>Images</label>
                                                     <input 
-                                                        value={images || ''}
+                                                        name="images"
+                                                        //value={images}
                                                         type="file" 
                                                         accept="image/*"
                                                         onChange={handleImageChange} 
@@ -219,7 +235,7 @@ const MyProfile = () => {
                                     </div>
                             </div>
                 </div>
-                <div className="json-div-test">{JSON.stringify(values)}</div>
+                {/* <div className="json-div-test">{JSON.stringify(values)}</div> */}
             </div>
     )
 }

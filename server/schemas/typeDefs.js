@@ -139,7 +139,7 @@ type Query {
 
   type Mutation {
     login(email: String!, password: String!): Auth
-    addUser(username: String!, firstName: String!, lastName: String!, email: String!, password: String!): Auth
+    addUser(username: String!, firstName: String!, lastName: String!, email: String!, password: String!, image: String): Auth
     userUpdate(input: UserUpdateInput): User!
     addExperience(input: AddExperienceInput): Experiences!
   }

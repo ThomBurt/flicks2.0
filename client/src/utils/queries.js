@@ -1,5 +1,7 @@
 import { gql } from '@apollo/client';
 
+import { USER_INFO } from './Fragments';
+
 export const GET_ME = gql`
   {
     me {
@@ -10,20 +12,11 @@ export const GET_ME = gql`
   }
 `;
 
-export const PROFILE = gql `
+export const PROFILE = gql`
     query {
         profile {
-            _id
-            username
-            firstName
-            lastName
-            email
-            images {
-                url
-                public_id
-            }
-            headline
-            createdAt 
+            ...userInfo
         }
-    }    
-`
+    }
+    ${USER_INFO}
+`;

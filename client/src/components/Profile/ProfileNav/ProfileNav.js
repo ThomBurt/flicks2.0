@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import {useQuery} from '@apollo/react-hooks';
-import omitDeep from 'omit-deep';
+//import omitDeep from 'omit-deep';
 
 import { PROFILE } from '../../../utils/queries';
 
@@ -41,7 +41,7 @@ const ProfileNav = () => {
                 firstName: data.profile.firstName,
                 lastName: data.profile.lastName,
                 email: data.profile.email,
-                images: omitDeep(data.profile.images, ["__typename"]),
+                images: data.profile.images,
                 headline: data.profile.headline,
                 createdAt: data.profile.createdAt
             });
@@ -58,7 +58,14 @@ const ProfileNav = () => {
                 <nav className="menu" tabIndex="0">
                         <div className="smartphone-menu-trigger"></div>
                     <header className="avatar">
-                            <img className='profile-img' src="https://ucarecdn.com/98a2c335-a1af-4262-bf9c-c8f76898f5f6/Untitleddesign.png" alt="profile-pic"/>
+                        {images.map((image) => (
+                                <img
+                                    src={image.url}
+                                    key={image.public_id}
+                                    alt={image.public_id}
+                                    className="profile-img"
+                                />
+                            ))}
                             <h1>{firstName} {lastName}</h1>
                             <h5>@{username}</h5>
                     </header>

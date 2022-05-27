@@ -10,7 +10,7 @@ import Resizer from "react-image-file-resizer";
 import './Login/Signup.css';
 
 const Signup = () => {
-  const [formState, setFormState] = useState({ username: '', firstName: '', lastName: '', email: '', password: '', images: '' });
+  const [formState, setFormState] = useState({ username: '', firstName: '', lastName: '', email: '', password: '', images: [] });
 
   const [addUser, { error}] = useMutation(ADD_USER);
 
@@ -25,6 +25,7 @@ const Signup = () => {
   };
 
   const handleImageChange = (event) => {
+    const { name, value } = event.target;
     var fileInput = false;
         if (event.target.files[0]) {
         fileInput = true;
@@ -43,15 +44,9 @@ const Signup = () => {
                 axios.post(`${process.env.REACT_APP_REST_ENDPOINT}/uploadimages`, {
                     image: uri
                 }, 
-                // {
-                //     headers: {
-                //         authtoken: state.user.token
-                //     }
-                // }
               )
               .then(response => {
                 console.log('Cloudinary Upload', response)
-                //setValues({...values, images: [...images, response.data]})
               })
               .catch(error => {
                   console.log('Upload failed', error)
@@ -63,6 +58,10 @@ const Signup = () => {
             console.log(err);
         }
     }
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
 }
 
   // submit form
@@ -138,6 +137,7 @@ const Signup = () => {
                 />
                 <input 
                   value={formState.images}
+                  name="images"
                   type="file" 
                   accept="image/*"
                   onChange={handleImageChange} 

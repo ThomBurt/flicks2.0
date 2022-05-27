@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import {useQuery} from '@apollo/react-hooks';
-import omitDeep from 'omit-deep';
+//import omitDeep from 'omit-deep';
 
 import { RiPencilFill } from 'react-icons/ri';
 
@@ -33,7 +33,7 @@ const ProfileTop = () => {
                 firstName: data.profile.firstName,
                 lastName: data.profile.lastName,
                 email: data.profile.email,
-                images: omitDeep(data.profile.images, ["__typename"]),
+                images: data.profile.images,
                 headline: data.profile.headline,
                 createdAt: data.profile.createdAt
             });
@@ -55,7 +55,15 @@ const ProfileTop = () => {
                 <div className='top-profile-bar'>
                     <div className='image-and-header'>
                         <div>
-                            <img className="my-profile-img" src={images} alt="profile-pic"></img>
+                            {/* <img className="my-profile-img" src={images[0].url} alt="profile-pic"></img> */}
+                            {images.map((image) => (
+                            <img
+                                src={image.url}
+                                key={image.public_id}
+                                alt={image.public_id}
+                                className="my-profile-img"
+                            />
+                        ))}
                         </div>
                         <div> 
                             <div>
