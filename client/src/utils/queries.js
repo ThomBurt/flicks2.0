@@ -20,3 +20,12 @@ export const PROFILE = gql`
     }
     ${USER_INFO}
 `;
+
+export const EXPERIENCES = gql`
+    query {
+        profile {
+            ...userInfo
+        }
+    }
+    ${USER_INFO}
+`;

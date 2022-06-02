@@ -8,6 +8,12 @@ import axios from 'axios';
 import { FiRefreshCw } from "react-icons/fi";
 import { RiArrowGoBackFill } from "react-icons/ri";
 
+import { USER_UPDATE } from '../../utils/mutations';
+import { useMutation } from '@apollo/react-hooks';
+
+import { PROFILE } from '../../utils/queries';
+
+
 const SelectMovie = () => {
 
   const [isLoading, setIsLoading] = useState(false);
@@ -17,6 +23,40 @@ const SelectMovie = () => {
   const [movieState, setMovieState] = useState({});
 
   const [streamingState, setStreamingState] = useState([{}]);
+
+    //mutation
+  //   const [userUpdate] = useMutation(USER_UPDATE, {
+  //     update: ({ data }) => {
+  //         console.log('MOVIE UPDATE MUTATION IN PROFILE', data);
+  //     }
+  // })
+  const [userUpdate, { error }] = useMutation(USER_UPDATE, {
+    update(cache, { data: { userUpdate } }) {
+      try {
+        // update thought array's cache
+        // could potentially not exist yet, so wrap in a try/catch
+        const { movies } = cache.readQuery({ query: PROFILE });
+        cache.writeQuery({
+          query: PROFILE,
+          data: { movies: [userUpdate, movies] },
+        });
+
+      } catch (e) {
+        console.error(e);
+      }
+      
+    }
+  })
+
+  // const { title, year, plot, image } = movieState;
+
+  const values = {
+    title: movieState.title,
+    year: movieState.year,
+    plot: movieState.plot,
+    image: movieState.image,
+    //streaming: streamingState.name
+  }
 
   if (!Auth.loggedIn()) {
    return <Redirect to="/login" />
@@ -28,6 +68,10 @@ const SelectMovie = () => {
     random = Math.floor(Math.random() * max)
     console.log(random)
   };
+
+
+
+
 
   const getMovie = async(props) => {
     setIsLoading(true);
@@ -67,6 +111,8 @@ const SelectMovie = () => {
 
       //local storage save
       localStorage.setItem('movieInfo', JSON.stringify(movieData.title));
+
+
 
 
       //RAPID API call start
@@ -139,6 +185,7 @@ const SelectMovie = () => {
     findRandom();
 
     getMovie();
+
   };
 
   const handleChange = (event) => {
@@ -148,6 +195,8 @@ const SelectMovie = () => {
       [name]: value,
     });
     console.log(formState);
+
+    userUpdate({variables: {input: values}})
   };
 
   const onRefresh = async (e) => {
