@@ -7,11 +7,6 @@ export const USER_INFO = gql`
         lastName
         username
         email
-        experiences {
-            movie
-            dinner
-            drink
-        }
         images {
             url
             public_id

@@ -16,32 +16,24 @@ const resolvers = {
 
       throw new AuthenticationError('Not logged in');
     },
+    //all Users
     users: async () => {
       return User.find()
         .select('-__v -password')
-        .populate('experiences');
+        .populate('experiences')
+        .populate('friends')
     },
+    //User by username
     user: async (parent, { username }) => {
       return User.findOne({ username })
         .select('-__v -password')
-        .populate('experiences');
+        .populate('experiences')
+        .populate('friends')
     },
     // experiences: async (parent, { username }) => {
     //   const params = username ? { username } : {};
     //   return Experience.find(params).sort({ createdAt: -1 });
     // }
-    experience: async () => {
-      return Experience.find();
-    },
-    drink: async () => {
-      return Drink.find();
-    },
-    dinner: async () => {
-      return Restaurant.find();
-    },
-    movie: async() => {
-      return Movie.find();
-    },
     profile: async (parent, args, context) => {
       if (context.user) {
         const userData = await User.findOne({ _id: context.user._id })
@@ -53,6 +45,15 @@ const resolvers = {
 
       // throw new AuthenticationError('Not logged in');
     },
+
+    // Experiences by username 
+    experiences: async (parent, { username }) => {
+      const params = username ? { username } : {};
+      return Experience.find(params).sort({ createdAt: -1 });
+    },
+    experience: async(parent, { _id }) => {
+      return Experience.findOne({ _id })
+    }
   },
 
   Mutation: {
@@ -91,55 +92,126 @@ const resolvers = {
     },
 
 
-    addExperience: async (parent, args, context) => {
-      if (context.user) {
-        const experience = await Experience.create({ ...args, username: context.user.username });
-
-        await User.findByIdAndUpdate(
-          { _id: context.user._id },
-          { $push: { experiences: experience._id } },
-          { new: true }
-        );
-
-        return experience;
-      }
-
-      throw new AuthenticationError('You need to be logged in!');
-    },
-
-    // saveMovie: async (parent, args, context) => {
+    // addExperience: async (parent, args, context) => {
     //   if (context.user) {
-    //     const movie = await Movie.create({ ...args, username: context.user.username });
+    //     const experience = await Experience.create({ ...args, username: context.user.username });
 
-    //     await Experience.create(
+    //     await User.findByIdAndUpdate(
     //       { _id: context.user._id },
-    //       { $push: { movies: movie._id } },
+    //       { $push: { experiences: newExperience } },
     //       { new: true }
-    //     );
-
-    //     return movie;
+    //     )
+    //     return experience;
     //   }
+
     //   throw new AuthenticationError('You need to be logged in!');
     // },
-    saveMovie: async (parent, args, context) => {
+    addExperience: async (parent, args, context) => {
+      //console.log(context);
       if (context.user) {
-        const movie = await Movie.create({ ...args, username: context.user.username });
-        //return await User.findByIdAndUpdate(context.user._id, args.input, { new: true });
-        await User.findByIdAndUpdate(
-          { _id: context.user._id },
-          { $push: { movies: movie._id } },
-          { new: true }
-        );
+        const experience = new Experience({ ...args });
 
-        return movie;
+        await User.findByIdAndUpdate(
+          {_id: context.user._id }, 
+          { $addToSet: { experiences: experience } }
+          ).populate('experiences')
+          
+        console.log(experience)
+        return experience;
       }
 
       throw new AuthenticationError('Not logged in');
     },
+
+    saveMovie: async (parent, args, {movieId, _id}, context) => {
+      if (context.user) {
+      
+        const addedMovie = await Movie.create(args.movieId)
+    
+        console.log(addedMovie)
+    
+        const experience = await Experience.findById(args._id);
+        
+        const updatedExperience = await Experience.findOneAndUpdate(
+          { _id: experience },
+          { $push: { movies: addedMovie} },
+          { new: true }
+          );
+          console.log(updatedExperience + "this is updated Experience")
+    
+        return updatedExperience;
+      }
+      throw new AuthenticationError('No Experience or movie with that id!');
+    },
+
+    saveRestaurant: async (parent, {restaurantId, _id}, context) => {
+      if (context.user) {
+    
+        console.log(args)
+    
+        const addedRestaurant = await Restaurant.findById(args.restaurantId)
+    
+        console.log(addedRestaurant)
+    
+        const experience = await Experience.findById(args._id);
+        
+        const updatedExperience = await Experience.findOneAndUpdate(
+          { _id: experience },
+          { $push: { restaurant: addedRestaurant } },
+          { new: true }
+          );
+          console.log(updatedExperience + "this is updated Experience")
+    
+      
+        return updatedExperience;
+      }
+      throw new AuthenticationError('No workout or exercise with that id!');
+    },
+    saveDrink: async (parent, {drinkId, _id}, context) => {
+      if (context.user) {
+    
+        console.log(args)
+    
+        const addedDrink = await Drink.findById(args.drinkId)
+    
+        console.log(addedDrink)
+    
+        const experience = await Experience.findById(args._id);
+        
+        const updatedExperience = await Experience.findOneAndUpdate(
+          { _id: experience },
+          { $push: { drink: addedDrink } },
+          { new: true }
+          );
+          console.log(updatedExperience + "this is updated Experience")
+      
+        return updatedExperience;
+      }
+      throw new AuthenticationError('No workout or exercise with that id!');
+    },
+
+     
+    addFriend: async (parent, { friendId }, context) => {
+      if (context.user) {
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $addToSet: { friends: friendId } },
+          { new: true }
+        ).populate('friends');
+
+        return updatedUser;
+      }
+
+      throw new AuthenticationError('You need to be logged in!');
+    },
+    
   }
 };
 
 module.exports = resolvers;
+
+
+
 
 
 

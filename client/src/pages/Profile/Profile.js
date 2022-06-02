@@ -3,13 +3,13 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { toast } from 'react-toastify';
 import {useQuery, useMutation} from '@apollo/react-hooks';
 // import {gql} from 'apollo-boost';
-import omitDeep from 'omit-deep';
+//import omitDeep from 'omit-deep';
 import axios from 'axios';
 import Resizer from "react-image-file-resizer";
 
 import ProfileNav from '../../components/Profile/ProfileNav/ProfileNav';
 import ProfileTop from '../../components/Profile/Profile-Top/Profile-Top';
-//import Post from '../Post/Post';
+
 
 import './Profile.scss';
 //import RecentActivity from '../../components/Profile/RecentActivity/RecentActivity';
