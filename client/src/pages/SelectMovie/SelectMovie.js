@@ -99,7 +99,8 @@ const SelectMovie = () => {
         title: selectedMovie.title,
         year: selectedMovie.description,
         image: selectedMovie.image,
-        plot: selectedMovie.plot
+        plot: selectedMovie.plot,
+        streaming: streamingState
       };
       //console.log(movieData);
       setMovieState(movieData);
@@ -111,6 +112,11 @@ const SelectMovie = () => {
 
       //local storage save
       localStorage.setItem('movieInfo', JSON.stringify(movieData.title));
+      localStorage.setItem("movieData", JSON.stringify(movieData))
+      //localStorage.setItem("streamingState", JSON.stringify(streamingState))
+      // localStorage.setItem('movieYear', JSON.stringify(movieData.year));
+      // localStorage.setItem('movieImage', JSON.stringify(movieData.image));
+      // localStorage.setItem('moviePlot', JSON.stringify(movieData.plot));
 
 
 

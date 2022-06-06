@@ -1,0 +1,48 @@
+.experience {
+    display: flex;
+    width: 30%;
+    height: 50%;
+    background-color: rgba(141,94,51, 0.8);
+    color: white;
+    border: 1px solid white; 
+    border-radius: 25px;  
+    margin: 10px;
+}
+
+.createdAtHeading {
+    position: absolute;
+    margin-left: 20px;
+}
+
+.selection-container {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    margin-top: 20px;
+}
+
+.selection-div {
+    display: flex;
+    padding: 10px;
+    flex-direction: column;
+    text-align: center;
+    height: 80%;
+    width: 33%;
+    border: 1px solid white;
+    background-color: rgba(141,94,51, 0.9);
+    margin: 10px;
+    border-radius: 7px;
+}
+
+.moviePosterHistory {
+    height: 180px;
+    text-decoration: underline;
+}
+
+.restaurantHistoryImage {
+    height: 100px;
+}
+
+.drinkHistoryImage {
+    height: 120px;
+}

@@ -42,12 +42,34 @@ export function SearchResult(props) {
   //     e.preventDefault();
   // }
 
+
+    const restaurantInfoObject = {
+      name: name,
+      image: b.image_url,
+      rating: rating,
+      reviews: b.review_count,
+      price: b.price,
+      address: b.location.address1,
+      city: b.location.city,
+      state: b.location.state,
+      zip: b.location.zip_code,
+      phone: b.phone,
+      pickup: b.transactions[0],
+      delivery: b.transactions[1]
+    }
+
+
   function onSubmit(e) {
 
    console.log(name) 
   //  console.log (b)
-   localStorage.setItem('restaurantInfo', JSON.stringify(name));
-   window.location.href='/drink';
+  //localStorage.setItem('restaurantInfo', JSON.stringify(name));
+   localStorage.setItem("restaurantInfoObject", JSON.stringify(restaurantInfoObject))
+  //  localStorage.setItem('restaurantImage', JSON.stringify(b.image_url));
+  //  localStorage.setItem('restaurantRating', JSON.stringify(rating));
+  //  localStorage.setItem('restaurantReviews', JSON.stringify(b.review_count));
+  //  localStorage.setItem('restaurantPrice', JSON.stringify(b.price));
+    window.location.href='/drink';
   }
 
   return (
