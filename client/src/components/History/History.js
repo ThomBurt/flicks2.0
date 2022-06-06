@@ -65,8 +65,6 @@ export const History = () => {
                                      </div>  */}
                                 </div>
                             </div>
-
-                     
                         </div>
                     </HistoryList>
                 </HistoryContainerForm>

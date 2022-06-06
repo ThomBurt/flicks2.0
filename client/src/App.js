@@ -6,7 +6,7 @@ import './App.css';
 import { NavBar } from './components/Navbar/Navbar';
 import { Home } from './components/Home/Home'
 import  GetStarted from './components/GetStarted/GetStarted'
-import { History } from './components/History/History';
+import  History  from './pages/History/History';
 import { Login } from './pages/Login/Login';
 import Signup from './pages/Signup';
 import SelectMovie from './pages/SelectMovie/SelectMovie.js';

@@ -31,8 +31,10 @@ const SelectDrink = () => {
       setDrinkState(drinkData);
       console.log(drinkState.name);
 
-      localStorage.setItem('drinkInfo', JSON.stringify(drinkData.name));
-      localStorage.setItem('drinkInfoImg', JSON.stringify(drinkData.image));
+      // localStorage.setItem('drinkInfo', JSON.stringify(drinkData.name));
+      // localStorage.setItem('drinkInfoImg', JSON.stringify(drinkData.image));
+
+      localStorage.setItem("drinkData", JSON.stringify(drinkData))
 
    
   
