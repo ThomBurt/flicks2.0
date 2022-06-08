@@ -49,7 +49,7 @@ const typeDefs = gql`
     username: String
     email: String
     headline: String
-    images: [Image]
+    images: String
     experiences: [Experiences]
     createdAt: DataTime
     friends: [User]
@@ -115,7 +115,7 @@ const typeDefs = gql`
   type Query {
     me: User
     users: [User]
-    user(username: String!): User
+    user(_id: ID!): User
     experiences(username: String): [User]
     experience(_id: ID!): Experiences
     profile: User!
@@ -131,11 +131,14 @@ const typeDefs = gql`
     userUpdate(input: UserUpdateInput): User!
 
 
-    addExperience(_id: ID, createdAt: String): Experiences
+    addExperience(_id: ID, experienceId:ID, createdAt: String): Experiences
+    removeExperience(_id: ID!, experienceId: ID): Experiences
 
-    saveMovie(_id: ID, title: String, plot: String, image_url: String): Experiences
+    saveMovie(_id: ID, movieId: ID, title: String, year: String, plot: String, image_url: String): Experiences
     saveRestaurant(_id: ID!, restaurantId: ID!): Experiences
     saveDrink(_id: ID!, drinkId: ID!): Experiences
+
+    removeMovie(_id: ID, movieId: ID): Experiences
 
     addFriend(friendId: ID!): User
 

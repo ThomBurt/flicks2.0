@@ -24,8 +24,8 @@ const resolvers = {
         .populate('friends')
     },
     //User by username
-    user: async (parent, { username }) => {
-      return User.findOne({ username })
+    user: async (parent, { _id }) => {
+      return User.findOne({ _id })
         .select('-__v -password')
         .populate('experiences')
         .populate('friends')
@@ -63,6 +63,9 @@ const resolvers = {
 
       return { token, user };
     },
+
+      // ===============================================================================================
+
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
 
@@ -79,6 +82,8 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
+
+      // ===============================================================================================
 
     userUpdate: async (parent, args, context) => {
       if (context.user) {
@@ -106,6 +111,11 @@ const resolvers = {
 
     //   throw new AuthenticationError('You need to be logged in!');
     // },
+
+
+  // ===============================================================================================
+
+
     addExperience: async (parent, args, context) => {
       //console.log(context);
       if (context.user) {
@@ -129,13 +139,42 @@ const resolvers = {
 
       throw new AuthenticationError('Not logged in');
     },
+    removeExperience: async (parent, args, context) => {
+      if (context.user) {
+        const removedExperience = await Experience.findById(args.experienceId);
+        
+        console.log(args)
+
+        await Experience.findByIdAndDelete(args.experienceId);
+
+        const updatedUser = await User.updateOne(
+          { _id: args._Id }, 
+          { $pull: { experiences: removedExperience } },
+          { new: true }
+          )
+
+        return console.log(context.user.firstName + "'s Experience: has been deleted from their Experiences");;
+      }
+
+      throw new AuthenticationError('No Experience or Movie with that ID');
+  },
+
+  // ===============================================================================================
 
     saveMovie: async (parent, args, context) => {
       if (context.user) {
 
         console.log(args)
       
-        const addedMovie = await Movie.create( { ...args.title })
+        const addedMovie = await Movie.create( 
+          { 
+            id: args.movieId, 
+            title: args.title, 
+            year: args.year, 
+            image_url: args.image_url, 
+            plot: args.plot 
+          } 
+        )
     
         console.log(addedMovie)
 
@@ -145,7 +184,6 @@ const resolvers = {
           { _id: experience },
           { $push: { movie: addedMovie }  },
           { new: true }
-   
           );
           console.log(updatedExperience + "this is updated Experience")
     
@@ -153,6 +191,24 @@ const resolvers = {
       }
       throw new AuthenticationError('No Experience or movie with that id!');
     },
+    removeMovie: async (parent, args, context) => {
+      if (context.user) {
+        console.log(context.user)
+        const removedMovie = await Movie.findById(args.movieId);
+
+        await Experience.updateOne(
+          { _id: args._id }, 
+          { $pull: { movie: removedMovie } },
+          { new: true }
+          )
+
+        return console.log(context.user.firstName + "'s Movie:" + removedMovie.title + " has been deleted from their Experience");;
+      }
+
+      throw new AuthenticationError('No Experience or Movie with that ID');
+  },
+
+    // ===============================================================================================
 
     saveRestaurant: async (parent, {restaurantId, _id}, context) => {
       if (context.user) {
