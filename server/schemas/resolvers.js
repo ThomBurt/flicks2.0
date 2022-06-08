@@ -109,33 +109,43 @@ const resolvers = {
     addExperience: async (parent, args, context) => {
       //console.log(context);
       if (context.user) {
-        const experience = new Experience({ ...args });
 
-        await User.findByIdAndUpdate(
-          {_id: context.user._id }, 
-          { $addToSet: { experiences: experience } }
-          ).populate('experiences')
-          
+        console.log(args)
+
+        const experience = await Experience.create( { ...args._id })
+
         console.log(experience)
-        return experience;
+
+        const user = await User.findById(args._id);
+
+        const updatedUser = await User.findByIdAndUpdate(
+          {_id: user }, 
+          { $push: { experiences: experience } },
+          { new: true }
+          )
+          
+        return updatedUser;
       }
 
       throw new AuthenticationError('Not logged in');
     },
 
-    saveMovie: async (parent, args, {movieId, _id}, context) => {
+    saveMovie: async (parent, args, context) => {
       if (context.user) {
+
+        console.log(args)
       
-        const addedMovie = await Movie.create(args.movieId)
+        const addedMovie = await Movie.create( { ...args.title })
     
         console.log(addedMovie)
-    
+
         const experience = await Experience.findById(args._id);
-        
+            
         const updatedExperience = await Experience.findOneAndUpdate(
           { _id: experience },
-          { $push: { movies: addedMovie} },
+          { $push: { movie: addedMovie }  },
           { new: true }
+   
           );
           console.log(updatedExperience + "this is updated Experience")
     
