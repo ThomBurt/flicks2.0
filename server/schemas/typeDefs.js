@@ -16,7 +16,6 @@ const typeDefs = gql`
     year: String
     plot: String
     image_url: String
-    streaming: [String]
   }
 
   type Dinner {
@@ -37,7 +36,6 @@ const typeDefs = gql`
 
   type Experiences {
     _id: ID
-    user: [User]
     movie: [Movie]
     dinner: [Dinner]
     drink: [Drink]
@@ -73,7 +71,6 @@ const typeDefs = gql`
     year: String
     plot: String
     image_url: String
-    streaming: [String]
   }
   input DinnerInput {
     _id: ID
@@ -120,7 +117,7 @@ const typeDefs = gql`
     users: [User]
     user(username: String!): User
     experiences(username: String): [User]
-    experience(_id: ID!): [Experiences]
+    experience(_id: ID!): Experiences
     profile: User!
   }
 
@@ -134,9 +131,9 @@ const typeDefs = gql`
     userUpdate(input: UserUpdateInput): User!
 
 
-    addExperience(createdAt: String): Experiences
+    addExperience(_id: ID, createdAt: String): Experiences
 
-    saveMovie(movieId: ID, title: String, plot: String, image_url: String, streaming:[String]): Experiences
+    saveMovie(_id: ID, title: String, plot: String, image_url: String): Experiences
     saveRestaurant(_id: ID!, restaurantId: ID!): Experiences
     saveDrink(_id: ID!, drinkId: ID!): Experiences
 
