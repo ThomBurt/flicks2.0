@@ -25,13 +25,7 @@ const userSchema = new Schema(
       match: [/.+@.+\..+/, 'Must match an email address!']
     },
     images: {
-      type: Array,
-        default: [
-            {
-                url: 'https://ucarecdn.com/4b1d7bf6-5bc7-4840-a699-d1b08b3aaa37/appicon.png',
-                public_id: Date.now
-            }
-        ]
+      type: String,
     },
 
     headline: {
