@@ -21,19 +21,15 @@ const resolvers = {
       return User.find()
         .select('-__v -password')
         .populate('experiences')
-        .populate('friends')
+        //.populate('friends')
     },
     //User by username
     user: async (parent, { _id }) => {
       return User.findOne({ _id })
         .select('-__v -password')
         .populate('experiences')
-        .populate('friends')
+        //.populate('friends')
     },
-    // experiences: async (parent, { username }) => {
-    //   const params = username ? { username } : {};
-    //   return Experience.find(params).sort({ createdAt: -1 });
-    // }
     profile: async (parent, args, context) => {
       if (context.user) {
         const userData = await User.findOne({ _id: context.user._id })
@@ -129,12 +125,13 @@ const resolvers = {
         const user = await User.findById(args._id);
 
         const updatedUser = await User.findByIdAndUpdate(
-          {_id: user }, 
-          { $push: { experiences: experience } },
+          {_id: args._id }, 
+          { $addToSet: { experiences: experience } },
           { new: true }
           )
-          
+        console.log(updatedUser) 
         return updatedUser;
+
       }
 
       throw new AuthenticationError('Not logged in');
