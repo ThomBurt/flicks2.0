@@ -51,6 +51,12 @@ const resolvers = {
       return Experience.findOne({ _id })
     }
   },
+  // ===============================================================================================
+  // -----------------------------------------------------------------------------------------------
+  // ===============================================================================================
+  // ===============================================================================================
+  // -----------------------------------------------------------------------------------------------
+  // ===============================================================================================
 
   Mutation: {
     addUser: async (parent, args) => {
@@ -92,24 +98,13 @@ const resolvers = {
       throw new AuthenticationError('Not logged in');
     },
 
-
-    // addExperience: async (parent, args, context) => {
-    //   if (context.user) {
-    //     const experience = await Experience.create({ ...args, username: context.user.username });
-
-    //     await User.findByIdAndUpdate(
-    //       { _id: context.user._id },
-    //       { $push: { experiences: newExperience } },
-    //       { new: true }
-    //     )
-    //     return experience;
-    //   }
-
-    //   throw new AuthenticationError('You need to be logged in!');
-    // },
-
-
-  // ===============================================================================================
+   // ===============================================================================================
+   // ____  \    /  ____  _____   ______   |  _____   |\    |   ______   _______
+   // |      \  /  |    | |       |     |  |  |       | \   |   |        |
+   // |___    \/   |____| |____   |_____|  |  |____   |  \  |   |        |_____
+   // |      / \   |      |       |  \     |  |       |   \ |   |        |
+   // |___  /   \  |      |____   |   \    |  |____   |    \|   |_____   |______
+   // ===============================================================================================
 
 
     addExperience: async (parent, args, context) => {
@@ -136,6 +131,8 @@ const resolvers = {
 
       throw new AuthenticationError('Not logged in');
     },
+
+
     removeExperience: async (parent, args, context) => {
       if (context.user) {
         const removedExperience = await Experience.findById(args.experienceId);
@@ -156,7 +153,13 @@ const resolvers = {
       throw new AuthenticationError('No Experience or Movie with that ID');
   },
 
-  // ===============================================================================================
+   // ===============================================================================================
+   //     /\      /\       _______  \        /   |     _____
+   //    /  \    /  \      |     |   \      /    |     | 
+   //   /    \  /    \     |     |    \    /     |     |____
+   //  /      \/      \    |     |     \  /      |     |
+   // /                \   |_____|      \/       |     |____
+   // ===============================================================================================
 
     saveMovie: async (parent, args, context) => {
       if (context.user) {
@@ -188,6 +191,8 @@ const resolvers = {
       }
       throw new AuthenticationError('No Experience or movie with that id!');
     },
+
+
     removeMovie: async (parent, args, context) => {
       if (context.user) {
         console.log(context.user)
@@ -203,57 +208,129 @@ const resolvers = {
       }
 
       throw new AuthenticationError('No Experience or Movie with that ID');
-  },
+    },
+
+   // ===============================================================================================
+   //  __     ___     ___  _____                      ___                       ______
+   // |  |   |       |       |       /\      |   |   |   |      /\      |\   |    |
+   // |__|   |___    |___    |      /__\     |   |   |___|     /__\     | \  |    |
+   // | \    |          |    |     /    \    |   |   | \      /    \    |  \ |    |
+   // |  \   |___    ___|    |    /      \   |___|   |  \_   /      \   |   \|    |
+   // ===============================================================================================
+    
+
+    saveRestaurant: async (parent, args, context) => {
+      if (context.user) {
+
+        console.log(args)
+    
+        const addedRestaurant = await Restaurant.create( 
+          { 
+            id: args.restaurantId, 
+            name: args.name, 
+            location: args.location, 
+            url: args.url,
+            image_url: args.image_url, 
+            rating: args.rating
+          } 
+        )
+
+        console.log(addedRestaurant)
+
+        const experience = await Experience.findById(args._id);
+            
+        const updatedExperience = await Experience.findOneAndUpdate(
+          { _id: experience },
+          { $push: { restaurant: addedRestaurant }  },
+          { new: true }
+          );
+          console.log(updatedExperience + "this is updated Experience")
+    
+        return updatedExperience;
+      }
+      throw new AuthenticationError('No Experience or Restaurant with that id!');
+    },
+
+
+    removeRestaurant: async (parent, args, context) => {
+      if (context.user) {
+        console.log(context.user)
+        const removedRestaurant = await Restaurant.findById(args.restaurantId);
+
+        await Experience.updateOne(
+          { _id: args._id }, 
+          { $pull: { restaurant: removedRestaurant } },
+          { new: true }
+          )
+
+        return console.log(context.user.firstName + "'s Restaurant:" + removedRestaurant.name + " has been deleted from their Experience");;
+      }
+
+      throw new AuthenticationError('No Experience or Restaurant with that ID');
+    },
+
+
+   // ===============================================================================================
+   //  __     __
+   // |  \   |  |   |   |\   |   | /
+   // |   )  |__|   |   | \  |   |/
+   // |  /   | \    |   |  \ |   |\
+   // L_/    |  \   |   |   \|   | \
+   // ===============================================================================================
+
+
+   saveDrink: async (parent, args, context) => {
+    if (context.user) {
+
+      console.log(args);
+  
+      const addedDrink = await Drink.create( 
+        { 
+          id: args.restaurantId, 
+          name: args.name, 
+          description: args.description, 
+          image_url: args.image_url, 
+        } 
+      )
+
+      console.log(addedDrink);
+      
+      const experience = await Experience.findById(args._id);
+          
+      const updatedExperience = await Experience.findOneAndUpdate(
+        { _id: experience },
+        { $push: { drink: addedDrink }  },
+        { new: true }
+        );
+        console.log(updatedExperience + "this is updated Experience")
+  
+      return updatedExperience;
+    }
+    throw new AuthenticationError('No Experience or Drink with that id!');
+    },
+
+
+    removeDrink: async (parent, args, context) => {
+      if (context.user) {
+        console.log(context.user)
+        const removedDrink = await Drink.findById(args.drinkId);
+
+        await Experience.updateOne(
+          { _id: args._id }, 
+          { $pull: { drink: removedDrink } },
+          { new: true }
+          )
+
+        return console.log(context.user.firstName + "'s Drink:" + removedDrink.name + " has been deleted from their Experience");;
+      }
+
+      throw new AuthenticationError('No Experience or Restaurant with that ID');
+    },
+
 
     // ===============================================================================================
 
-    saveRestaurant: async (parent, {restaurantId, _id}, context) => {
-      if (context.user) {
-    
-        console.log(args)
-    
-        const addedRestaurant = await Restaurant.findById(args.restaurantId)
-    
-        console.log(addedRestaurant)
-    
-        const experience = await Experience.findById(args._id);
-        
-        const updatedExperience = await Experience.findOneAndUpdate(
-          { _id: experience },
-          { $push: { restaurant: addedRestaurant } },
-          { new: true }
-          );
-          console.log(updatedExperience + "this is updated Experience")
-    
-      
-        return updatedExperience;
-      }
-      throw new AuthenticationError('No workout or exercise with that id!');
-    },
-    saveDrink: async (parent, {drinkId, _id}, context) => {
-      if (context.user) {
-    
-        console.log(args)
-    
-        const addedDrink = await Drink.findById(args.drinkId)
-    
-        console.log(addedDrink)
-    
-        const experience = await Experience.findById(args._id);
-        
-        const updatedExperience = await Experience.findOneAndUpdate(
-          { _id: experience },
-          { $push: { drink: addedDrink } },
-          { new: true }
-          );
-          console.log(updatedExperience + "this is updated Experience")
-      
-        return updatedExperience;
-      }
-      throw new AuthenticationError('No workout or exercise with that id!');
-    },
 
-     
     addFriend: async (parent, { friendId }, context) => {
       if (context.user) {
         const updatedUser = await User.findOneAndUpdate(
@@ -267,8 +344,12 @@ const resolvers = {
 
       throw new AuthenticationError('You need to be logged in!');
     },
+  },
+
+     
+
     
-  }
+  
 };
 
 module.exports = resolvers;
