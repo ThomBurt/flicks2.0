@@ -16,9 +16,10 @@ const typeDefs = gql`
     year: String
     plot: String
     image_url: String
+    streaming: [String]
   }
 
-  type Dinner {
+  type Restaurant {
     _id: ID
     name: String
     location: String
@@ -37,7 +38,7 @@ const typeDefs = gql`
   type Experiences {
     _id: ID
     movie: [Movie]
-    dinner: [Dinner]
+    restaurant: [Restaurant]
     drink: [Drink]
     createdAt: String
   }
@@ -65,29 +66,6 @@ const typeDefs = gql`
 
   # ---------------------------------------------------------------------------
 
-  input MovieInput {
-    _id: ID
-    title: String
-    year: String
-    plot: String
-    image_url: String
-  }
-  input DinnerInput {
-    _id: ID
-    name: String
-    location: String
-    url: String
-    image_url: String
-    rating: String
-  }
-  input DrinkInput {
-    _id: ID
-    name: String
-    description: String
-    image_url: String
-  }
-
-
   input ImageInput {
     url: String
     public_id: String
@@ -100,14 +78,6 @@ const typeDefs = gql`
     lastName: String
     images: [ImageInput]
     headline: String
-  }
-
-  input AddExperienceInput {
-    _id: ID
-    movie: [MovieInput]
-    dinner: [DinnerInput]
-    drink: [DrinkInput]
-    createdAt: String
   }
 
   # ---------------------------------------------------------------------------
@@ -134,11 +104,13 @@ const typeDefs = gql`
     addExperience(_id: ID, experienceId:ID, createdAt: String): Experiences
     removeExperience(_id: ID!, experienceId: ID): Experiences
 
-    saveMovie(_id: ID, movieId: ID, title: String, year: String, plot: String, image_url: String): Experiences
-    saveRestaurant(_id: ID!, restaurantId: ID!): Experiences
-    saveDrink(_id: ID!, drinkId: ID!): Experiences
+    saveMovie(_id: ID, movieId: ID, title: String, year: String, plot: String, image_url: String, streaming: [String]): Experiences
+    saveRestaurant(_id: ID!, restaurantId: ID!, name: String, location: String, url: String, image_url: String, rating: String): Experiences
+    saveDrink(_id: ID!, drinkId: ID!, name: String, description: String, image_url: String): Experiences
 
     removeMovie(_id: ID, movieId: ID): Experiences
+    removeRestaurant(_id: ID, restaurantId: ID): Experiences
+    removeDrink(_id: ID, drinkId: ID): Experiences
 
     addFriend(friendId: ID!): User
 

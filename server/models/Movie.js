@@ -17,12 +17,11 @@ const movieSchema = new Schema(
   plot: {
     type: String
   },
-
-  // streaming: [
-  //    {
-  //      type: String,
-  //    },
-  // ],  
+  streaming: [
+     {
+       type: String,
+     },
+  ],  
 });
 
  const Movie = mongoose.model('Movie', movieSchema)
