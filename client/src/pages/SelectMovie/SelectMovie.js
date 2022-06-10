@@ -24,7 +24,7 @@ const SelectMovie = () => {
 
   const [streamingState, setStreamingState] = useState([{}]);
 
-  const [ADD_EXPERIENCE] = useMutation(ADD_EXPERIENCE)
+  // const [ADD_EXPERIENCE] = useMutation(ADD_EXPERIENCE)
 
     //mutation
   //   const [userUpdate] = useMutation(USER_UPDATE, {

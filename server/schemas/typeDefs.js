@@ -53,7 +53,7 @@ const typeDefs = gql`
     username: String
     email: String
     headline: String
-    images: String
+    images: [Image]
     experiences: [Experiences]
     createdAt: DataTime
     friends: [User]
@@ -92,6 +92,7 @@ const typeDefs = gql`
     experiences(username: String): [User]
     experience(_id: ID!): Experiences
     profile: User!
+    profileWithExperiences: User
   }
 
   # ---------------------------------------------------------------------------

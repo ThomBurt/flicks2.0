@@ -47,12 +47,12 @@ export const ADD_EXPERIENCE = gql `
       }
 `;
 
-export const REMOVE_EXPERIENCE = gql = `
-      mutation RemoveExperience($id: ID!, $experienceId: ID) {
-        removeExperience(_id: $id, experienceId: $experienceId) {
-          _id
-        }
-}`;
+// export const REMOVE_EXPERIENCE = gql = `
+//       mutation RemoveExperience($id: ID!, $experienceId: ID) {
+//         removeExperience(_id: $id, experienceId: $experienceId) {
+//           _id
+//         }
+// }`;
 
 
 export const SAVE_MOVIE = gql`
@@ -87,7 +87,7 @@ export const SAVE_RESTAURANT = gql `
     }
 `;
 
-export const SAVE_DRINK = gql = `
+export const SAVE_DRINK = gql `
       mutation SaveDrink($id: ID!, $drinkId: ID!, $name: String, $description: String, $imageUrl: String) {
         saveDrink(_id: $id, drinkId: $drinkId, name: $name, description: $description, image_url: $imageUrl) {
           _id
