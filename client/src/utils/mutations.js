@@ -28,23 +28,7 @@ mutation addUser($username: String!, $firstName: String!, $lastName: String!, $e
 }
 `;
 
-// export const USER_UPDATE = gql `
-//     mutation userUpdate($input: UserUpdateInput!) {
-//         userUpdate(input: $input) {
-//             _id
-//             username
-//             firstName
-//             lastName
-//             email
-//             images {
-//                 url
-//                 public_id
-//             }
-//             headline
-//             createdAt 
-//         }
-//     }
-// `
+
 export const USER_UPDATE = gql`
     mutation userUpdate($input: UserUpdateInput!) {
         userUpdate(input: $input) {
@@ -55,31 +39,63 @@ export const USER_UPDATE = gql`
 `;
 
 
-// export const SAVE_MOVIE = gql`
-//     mutation saveMovie($movieData: MovieInput!) {
-//         saveMovie(movieData: $movieData) {
-//         savedMovies {
-//           title,
-//           year,
-//           image,
-//           plot,
-//           streaming 
-//           }
-//         }
-//     }
-// `;
+export const ADD_EXPERIENCE = gql `
+      mutation AddExperience($id: ID, $createdAt: String) {
+        addExperience(_id: $id, createdAt: $createdAt) {
+          createdAt
+        }
+      }
+`;
+
+export const REMOVE_EXPERIENCE = gql = `
+      mutation RemoveExperience($id: ID!, $experienceId: ID) {
+        removeExperience(_id: $id, experienceId: $experienceId) {
+          _id
+        }
+}`;
+
 
 export const SAVE_MOVIE = gql`
-    mutation saveMovie($title: String!, $year: String, $plot: String, $image_url: String!) {
-        saveMovie(title: $title, year: $year, plot: $plot, image_url: $image_url) {
-        savedMovies {
-          title,
-          year,
-          image,
-          plot,
-          streaming 
-          }
+    mutation SaveMovie($id: ID, $title: String, $plot: String, $imageUrl: String, $movieId: ID, $year: String, $streaming: String) {
+      saveMovie(_id: $id, title: $title, plot: $plot, image_url: $imageUrl, movieId: $movieId, year: $year, streaming: $streaming) {
+        _id
+        movie {
+          title
+          year
+          plot
+          image_url
+          _id
+          streaming
         }
+      }
     }
 `;
 
+export const SAVE_RESTAURANT = gql `
+    mutation SaveRestaurant($id: ID!, $restaurantId: ID!, $name: String, $location: String, $url: String, $imageUrl: String, $rating: String) {
+      saveRestaurant(_id: $id, restaurantId: $restaurantId, name: $name, location: $location, url: $url, image_url: $imageUrl, rating: $rating) {
+        _id
+        restaurant {
+          _id
+          name
+          location
+          url
+          image_url
+          rating
+        }
+      }
+    }
+`;
+
+export const SAVE_DRINK = gql = `
+      mutation SaveDrink($id: ID!, $drinkId: ID!, $name: String, $description: String, $imageUrl: String) {
+        saveDrink(_id: $id, drinkId: $drinkId, name: $name, description: $description, image_url: $imageUrl) {
+          _id
+          drink {
+            name
+            description
+            image_url
+          }
+        }
+      }
+`;

@@ -6,8 +6,17 @@ const restaurantSchema = new Schema({
   name: {
     type: String,
   },
-  location: {
+  locationAddress: {
     type: String,
+  },
+  locationCity: {
+    type: String,
+  },
+  locationState: {
+    type: String,
+  },
+  locationZip: {
+    type: String
   },
   url: {
     type: String,

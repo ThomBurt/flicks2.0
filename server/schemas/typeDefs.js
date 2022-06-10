@@ -16,13 +16,16 @@ const typeDefs = gql`
     year: String
     plot: String
     image_url: String
-    streaming: [String]
+    streaming: String
   }
 
   type Restaurant {
     _id: ID
     name: String
-    location: String
+    locationAddress: String
+    locationCity: String
+    locationState: String
+    locationZip: String
     url: String
     image_url: String
     rating: String
@@ -104,8 +107,8 @@ const typeDefs = gql`
     addExperience(_id: ID, experienceId:ID, createdAt: String): Experiences
     removeExperience(_id: ID!, experienceId: ID): Experiences
 
-    saveMovie(_id: ID, movieId: ID, title: String, year: String, plot: String, image_url: String, streaming: [String]): Experiences
-    saveRestaurant(_id: ID!, restaurantId: ID!, name: String, location: String, url: String, image_url: String, rating: String): Experiences
+    saveMovie(_id: ID, movieId: ID, title: String, year: String, plot: String, image_url: String, streaming: String): Experiences
+    saveRestaurant(_id: ID!, restaurantId: ID!, name: String, locationAddress: String, locationCity: String, locationState: String, locationZip: String, url: String, image_url: String, rating: String): Experiences
     saveDrink(_id: ID!, drinkId: ID!, name: String, description: String, image_url: String): Experiences
 
     removeMovie(_id: ID, movieId: ID): Experiences
