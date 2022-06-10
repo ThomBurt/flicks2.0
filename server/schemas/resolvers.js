@@ -41,6 +41,17 @@ const resolvers = {
 
       // throw new AuthenticationError('Not logged in');
     },
+    profileWithExperiences: async (parent, args, context) => {
+      if (context.user) {
+        const userData = await User.findOne({ _id: context.user._id })
+          .select('-__v -password')
+          .populate('experiences');
+
+        return userData;
+      }
+
+      // throw new AuthenticationError('Not logged in');
+    },
 
     // Experiences by username 
     experiences: async (parent, { username }) => {

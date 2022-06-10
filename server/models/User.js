@@ -26,8 +26,14 @@ const userSchema = new Schema(
       match: [/.+@.+\..+/, 'Must match an email address!']
     },
     images: {
-      type: String,
-    },
+      type: Array,
+      default: [
+          {
+              url: 'https://via.placeholder.com/200x200.png?text=Profile',
+              public_id: Date.now
+          }
+      ]
+  },
 
     headline: {
       type: String

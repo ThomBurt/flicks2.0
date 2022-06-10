@@ -42,7 +42,7 @@ const ProfileTop = () => {
 
 
    //destructure
-   const { username, firstName, lastName, images, headline, createdAt } = values;
+   const { username, firstName, lastName, email, images, headline, createdAt } = values;
 
 //    const image = () => {
 //        console.log(images)
@@ -69,6 +69,7 @@ const ProfileTop = () => {
                             <div>
                                 <h1>{firstName} {lastName}</h1>
                                 <h5>@{username}</h5>
+                                <h5>{email}</h5>
                                 <p>{headline}</p>
                             </div>
                         </div>

@@ -21,6 +21,55 @@ export const PROFILE = gql`
     ${USER_INFO}
 `;
 
+export const PROFILE_W_EXPERIENCES = gql`
+    query profileWithExperiences {
+      profileWithExperiences {
+        _id
+        experiences {
+          movie {
+            title
+            year
+            plot
+            image_url
+            streaming
+            _id
+          }
+          _id
+          restaurant {
+            _id
+            name
+            locationAddress
+            locationCity
+            locationState
+            locationZip
+            url
+            image_url
+            rating
+          }
+          drink {
+            _id
+            name
+            description
+            image_url
+          }
+          createdAt
+        }
+        firstName
+        lastName
+        username
+        email
+        headline
+        images {
+          url
+          public_id
+        }
+        createdAt
+      }
+    }
+`;
+
+
+
 export const USER_WITH_EXPERIENCES = gql `
       query User($id: ID!) {
         user(_id: $id) {
@@ -33,14 +82,18 @@ export const USER_WITH_EXPERIENCES = gql `
               plot
               image_url
               _id
+              streaming
             }
             restaurant {
               name
-              location
               url
               image_url
               rating
               _id
+              locationAddress
+              locationCity
+              locationState
+              locationZip
             }
             drink {
               name
