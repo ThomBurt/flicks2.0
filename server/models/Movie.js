@@ -17,11 +17,9 @@ const movieSchema = new Schema(
   plot: {
     type: String
   },
-  streaming: [
-     {
+  streaming: {
        type: String,
      },
-  ],  
 });
 
  const Movie = mongoose.model('Movie', movieSchema)

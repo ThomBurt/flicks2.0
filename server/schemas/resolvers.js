@@ -51,6 +51,7 @@ const resolvers = {
       return Experience.findOne({ _id })
     }
   },
+
   // ===============================================================================================
   // -----------------------------------------------------------------------------------------------
   // ===============================================================================================
@@ -172,7 +173,8 @@ const resolvers = {
             title: args.title, 
             year: args.year, 
             image_url: args.image_url, 
-            plot: args.plot 
+            plot: args.plot,
+            streaming: args.streaming
           } 
         )
     
@@ -228,7 +230,10 @@ const resolvers = {
           { 
             id: args.restaurantId, 
             name: args.name, 
-            location: args.location, 
+            locationAddress: args.locationAddress, 
+            locationCity: args.locationCity, 
+            locationState: args.locationState, 
+            locationZip: args.locationZip, 
             url: args.url,
             image_url: args.image_url, 
             rating: args.rating
@@ -344,12 +349,7 @@ const resolvers = {
 
       throw new AuthenticationError('You need to be logged in!');
     },
-  },
-
-     
-
-    
-  
+  },  
 };
 
 module.exports = resolvers;
