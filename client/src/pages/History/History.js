@@ -25,19 +25,20 @@ const History = () => {
         if (data) {
            // console.log(data.profile)
            setExperiences({
-                data: data
+                data: data.profileWithExperiences.experiences
             });
         }
     }, [data]);
 
     console.log(experiences.data)
 
-    const test = experiences.data;
-    console.log(test)
+    // const test = experiences.data;
+    // console.log(test)
 
     // let searchResults = null;
 
-    // let searchResults = experiences.map(e => <HistoryDB key={e.id} experience={e}/>);
+  //  let searchResults = experiences;
+     let searchResults = experiences.data?.map(e => <HistoryDB key={e._id} experience={e}/>);
     
 
     return(
@@ -49,7 +50,7 @@ const History = () => {
                     </div>
 
                     <div className='experiencesContainer'> 
-                         <HistoryDB /> 
+                        {searchResults} 
                     </div>
                 </div>
 
